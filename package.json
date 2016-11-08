@@ -1,0 +1,41 @@
+{
+  "name": "zorogolf",
+  "version": "1.0.0",
+  "description": "Juego de mesa de golf online",
+  "main": "main.js",
+  "scripts": {
+    "start-watch": "nodemon server/server.js",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:dev": "start npm run start-watch && start npm run build_dev",
+    "start:prod": "npm run build && node server/server.bundle.js",
+    "build:client": "webpack",
+    "build:server": "webpack --config webpack.server.config.js",
+    "build:client_dev": "webpack -w",
+    "build:server_dev": "webpack -w --config webpack.server.config.js",
+    "build": "npm run build:client && npm run build:server",
+    "build_dev": "start npm run build:client_dev && start npm run build:server_dev"
+  },
+  "keywords": [],
+  "author": "Roberto Méndez",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.5.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "nodemon": "^1.11.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "react-router": "^3.0.0",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.7.4",
+    "redux-thunk": "^2.1.0",
+    "webpack": "^1.13.3"
+  }
+}
