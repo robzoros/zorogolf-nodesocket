@@ -3,7 +3,7 @@ import path from 'path'
 import compression from 'compression'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import routes from '../public/app/api/routes.jsx'
+import routes from '../src/api/routes.jsx'
 import express from 'express'
 
 var app = express()

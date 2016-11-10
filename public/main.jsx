@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import { renderRutasApp } from '../src/api/routes.jsx'
 
-import routes  from './app/api/routes.jsx';
-import Bootstrap from './app/bower/bootstrap-without-jquery.min.js'
 
-class renderRoutes extends  Component {
-    render() {
-        return <Router history={browserHistory} routes={routes} />
-    }
-}
+window.onload = () => {
+    ReactDOM.render( renderRutasApp(), document.getElementById('container'))
+};
 
-render( <renderRoutes />, document.getElementById('container'))

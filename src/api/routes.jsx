@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, hasHistory } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 
 // route components
@@ -9,8 +9,8 @@ import PartidasUI  from '../ui/partidas.jsx'
 import Partida  from '../ui/partida.jsx'
 import Store from './store/store' */
 
-const routes = (
-    <Route path="/" component={Inicio} />
-)
-
-export default routes
+export const renderRutasApp = () => (
+        <Router history={browserHistory}>
+            <Route path="/" component={Inicio} />
+        </Router>
+);

@@ -46,17 +46,33 @@
 
 	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
 
-	var React = __webpack_require__(1),
-	    path = __webpack_require__(2),
-	    compression = __webpack_require__(3),
-	    renderToString = __webpack_require__(4).renderToString,
-	    reactRouter = __webpack_require__(5),
-	    match = reactRouter.match,
-	    RouterContext = reactRouter.RouterContext,
-	    routes = __webpack_require__(6),
-	    express = __webpack_require__(9);
+	var _react = __webpack_require__(1);
 
-	var app = express();
+	var _react2 = _interopRequireDefault(_react);
+
+	var _path = __webpack_require__(2);
+
+	var _path2 = _interopRequireDefault(_path);
+
+	var _compression = __webpack_require__(3);
+
+	var _compression2 = _interopRequireDefault(_compression);
+
+	var _server = __webpack_require__(4);
+
+	var _reactRouter = __webpack_require__(5);
+
+	var _routes = __webpack_require__(6);
+
+	var _routes2 = _interopRequireDefault(_routes);
+
+	var _express = __webpack_require__(9);
+
+	var _express2 = _interopRequireDefault(_express);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var app = (0, _express2.default)();
 	var server = __webpack_require__(10).Server(app);
 	var io = __webpack_require__(11)(server);
 
@@ -66,22 +82,23 @@
 	    author: "Carlos Azaustre"
 	}];
 
-	app.use(compression());
+	app.use((0, _compression2.default)());
 	app.set('view engine', 'ejs');
-	app.set('views', path.join(__dirname, '../public'));
+	app.set('views', _path2.default.join(__dirname, '../public'));
 
 	// serve our static stuff like index.css
-	app.use(express.static(path.join(__dirname, '../public'), { index: false }));
+	app.use(_express2.default.static(_path2.default.join(__dirname, '../public'), { index: false }));
 
 	app.get('*', function (req, res) {
-	    match({ routes: routes, location: req.url }, function (err, redirect, props) {
+	    (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
+	        console.log(req.url);
 	        if (err) {
 	            res.status(500).send(err.message);
 	        } else if (redirect) {
 	            res.redirect(redirect.pathname + redirect.search);
 	        } else if (props) {
 	            // hey we made it!
-	            var appHtml = renderToString(React.createElement(RouterContext, props));
+	            var appHtml = (0, _server.renderToString)(_react2.default.createElement(_reactRouter.RouterContext, props));
 	            return res.render('index', { markup: appHtml });
 	        } else {
 	            res.status(404).send('Not Found');
