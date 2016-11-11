@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:dev": "start npm run build_dev && start nodemon server/main.js",
-    "start:prod": "npm run build && node server/main.js",
+    "start:dev": "start npm run build_dev && start nodemon server/server.js",
+    "start:prod": "npm run build && node server/server.js",
     "build:client": "webpack",
     "build:server": "webpack --config webpack.server.config.js",
     "build:client_dev": "webpack -w",
@@ -18,15 +18,23 @@
   "author": "Roberto Méndez",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "socket.io": "^1.5.1",
+    "jwt-simple": "^0.5.0",
+    "mongoose": "^4.6.7",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^3.0.0",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "request": "^2.78.0",
+    "socket.io": "^1.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
