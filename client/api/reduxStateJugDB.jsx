@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ESTADO_PARTIDA} from './constantes'
-import { actualizarJugadores, setEstadoHoyo } from './actions/acciones-partidas';
-import Store from './store/store'
+import { actualizarJugadores, setEstadoHoyo } from './redux/acciones-partidas';
+import Store from './redux/store'
 
 export default class ReduxStateJugDB extends Component {
   constructor(props) {

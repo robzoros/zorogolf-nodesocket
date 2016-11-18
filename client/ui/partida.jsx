@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import JugadorActivo from './jugador_activo.jsx'
 import Recorrido from './recorrido.jsx'
 import Jugadores from './jugadores.jsx'
-import Partidas from '../api/colecciones'
-import { nuevaPartida, addCampo, setEstadoHoyo, userLogin, actualizarJugadores } from '../api/actions/acciones-partidas';
+//import Partidas from '../api/colecciones'
+import { nuevaPartida, addCampo, setEstadoHoyo, userLogin, actualizarJugadores } from '../api/redux/acciones-partidas';
 import * as Control from '../api/controlador'
 import { getIndiceJugador, getItem, contarEstados } from '../api/utiles'
 import { ESTADO_JUGADOR, ESTADO_PARTIDA } from '../api/constantes'

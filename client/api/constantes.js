@@ -117,3 +117,8 @@ export const ESTADO_PARTIDA = {
   FIN_HOYO: 'F',
   FIN_ACCIONES: 'C'
 }
+
+export const LOCAL_STORAGE = {
+  TOKEN: 'Token-Zorogolf',
+  USUARIO: 'User-Zorogolf'
+}

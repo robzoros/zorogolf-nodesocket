@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
 import SelectColor from './color.jsx';
-import { nuevaPartida, nuevoJugador } from '../api/actions/acciones-partidas';
+import { nuevaPartida, nuevoJugador } from '../api/redux/acciones-partidas';
 import {COLORES} from '../api/constantes'
 
 class CrearPartida extends Component {
@@ -10,7 +10,7 @@ class CrearPartida extends Component {
     this.state = {
       id:0,
       color: "Black"
-    };
+    }
 
     this.setColor = this.setColor.bind(this)
     this.crearPartida = this.crearPartida.bind(this)
@@ -29,7 +29,7 @@ class CrearPartida extends Component {
     partida.nombre = document.getElementById('nombre').value
     partida.jugadores = jugadores
     partida.campo = 'Zorocampo'
-    Meteor.call('nuevaPartida', partida, (error, result) => {
+    /* Meteor.call('nuevaPartida', partida, (error, result) => {
       this.setState({id: result})
       partida.id = result
       jugador.nombre = Meteor.user().username
@@ -38,7 +38,7 @@ class CrearPartida extends Component {
         this.props.dispatch(nuevaPartida(partida))
         this.props.dispatch(nuevoJugador(jug))
       })
-    })
+    })*/
   }
 
   render() {
@@ -48,7 +48,7 @@ class CrearPartida extends Component {
           <h1 className="text-center">New Game Data</h1>
           <div className="row-fluid form-group" >
             <div className="col-xs-4 col-lg-4 text-right">
-                <label for="nombre" className="control-label">Game Name</label>
+                <label className="control-label">Game Name</label>
             </div>
             <div className="col-xs-8 col-lg-8">
               <input id="nombre"
@@ -62,7 +62,7 @@ class CrearPartida extends Component {
 
           <div className="row-fluid form-group" >
             <div className="col-xs-4 col-lg-4 text-right">
-              <label for="color" className="control-label">Choose Color</label>
+              <label className="control-label">Choose Color</label>
             </div>
             <div className="col-xs-4 col-lg-4">
               <SelectColor setColor={this.setColor} colores={COLORES}/>
@@ -81,6 +81,7 @@ class CrearPartida extends Component {
 
 function mapStateToProps(state) {
   return {
+    partidas: state.partida
   }
 }
 

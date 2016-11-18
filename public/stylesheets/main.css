@@ -310,6 +310,7 @@ img::-moz-selection {
 
 .navbar{
   background-color: #f05f40;
+  background-image: none;
 }
 .navbar-default .navbar-nav > li > a {color: white;}
 .tituloJugador {
@@ -379,4 +380,28 @@ input[type="checkbox"]:checked + span:before {
 
 .checkbox label, .radio label {
     padding-left: 0px;
+}
+
+#login-dropdown-list .dropdown-menu {
+    min-width: 300px;
+    padding: 15px;
+}
+#login-dropdown-list input:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+#login-dropdown-list input {
+    margin: 0 0 -1px;
+    border-radius: 0px;
+    position: relative;
+    z-index: 1;
+}
+#login-dropdown-list .btn {
+    margin-top: 5px;
+}
+#login-dropdown-list #forgot-password-link, #login-dropdown-list #signup-link {
+    margin-top: 10px;
+}
+#login-dropdown-list a {
+    cursor: pointer;
 }

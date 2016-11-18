@@ -21452,22 +21452,38 @@
 
 	var _app2 = _interopRequireDefault(_app);
 
+	var _barra_nav = __webpack_require__(270);
+
+	var _barra_nav2 = _interopRequireDefault(_barra_nav);
+
+	var _partidas = __webpack_require__(282);
+
+	var _partidas2 = _interopRequireDefault(_partidas);
+
+	var _store = __webpack_require__(273);
+
+	var _store2 = _interopRequireDefault(_store);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/*import Principal from '../ui/barra_nav.jsx'
-	import PartidasUI  from '../ui/partidas.jsx'
-	import Partida  from '../ui/partida.jsx'
-	import Store from './store/store' */
-
+	// route components
 	var renderRutasApp = exports.renderRutasApp = function renderRutasApp() {
 	    return _react2.default.createElement(
-	        _reactRouter.Router,
-	        { history: _reactRouter.browserHistory },
-	        _react2.default.createElement(_reactRouter.Route, { path: '/', component: _app2.default })
+	        _reactRedux.Provider,
+	        { store: _store2.default },
+	        _react2.default.createElement(
+	            _reactRouter.Router,
+	            { history: _reactRouter.browserHistory },
+	            _react2.default.createElement(_reactRouter.Route, { path: '/', component: _app2.default }),
+	            _react2.default.createElement(
+	                _reactRouter.Route,
+	                { component: _barra_nav2.default },
+	                _react2.default.createElement(_reactRouter.Route, { path: '/partidas', component: _partidas2.default })
+	            )
+	        )
 	    );
 	};
-
-	// route components
+	//import Partida  from '../ui/partida.jsx'
 
 /***/ },
 /* 173 */
@@ -28570,6 +28586,2575 @@
 	}(_react.Component);
 
 	exports.default = Inicio;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRedux = __webpack_require__(229);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(173);
+
+	var _form_cuenta = __webpack_require__(271);
+
+	var _form_cuenta2 = _interopRequireDefault(_form_cuenta);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	var _store = __webpack_require__(273);
+
+	var _store2 = _interopRequireDefault(_store);
+
+	var _sesion = __webpack_require__(289);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Principal = function (_Component) {
+	    _inherits(Principal, _Component);
+
+	    function Principal(props) {
+	        _classCallCheck(this, Principal);
+
+	        var _this = _possibleConstructorReturn(this, (Principal.__proto__ || Object.getPrototypeOf(Principal)).call(this, props));
+
+	        _this.newGame = _this.newGame.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Principal, [{
+	        key: 'cambiarPassword',
+	        value: function cambiarPassword() {
+	            var passRepetida = document.getElementById("login-password-again").value;
+	            var user = {
+	                name: document.getElementById("login-username").value,
+	                password: document.getElementById("login-password").value
+	            };
+	            if (passRepetida === user.password) console.log("Cambiar Password");
+	        }
+	    }, {
+	        key: 'login',
+	        value: function login() {
+	            var usuario = {
+	                name: document.getElementById("login-username").value,
+	                password: document.getElementById("login-password").value
+	            };
+	            console.log("Login user %o", usuario);
+	            (0, _sesion.login)(usuario);
+	        }
+	    }, {
+	        key: 'crearCuenta',
+	        value: function crearCuenta() {
+	            var passRepetida = document.getElementById("login-password-again").value;
+	            var user = {
+	                name: document.getElementById("login-username").value,
+	                password: document.getElementById("login-password").value,
+	                email: document.getElementById("login-email").value
+	            };
+	            if (passRepetida === user.password) console.log("CrearCuenta");
+	        }
+	    }, {
+	        key: 'newGame',
+	        value: function newGame() {
+	            _store2.default.dispatch((0, _accionesPartidas.empezarPartida)({}));
+	            _reactRouter.browserHistory.push('/partidas');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'container enlinea' },
+	                _react2.default.createElement(BarraNav, { newGame: this.newGame, cambiarPassword: this.cambiarPassword, login: this.login, crearCuenta: this.crearCuenta }),
+	                this.props.children
+	            );
+	        }
+	    }]);
+
+	    return Principal;
+	}(_react.Component);
+
+	exports.default = Principal;
+
+	var BarraNav = function (_Component2) {
+	    _inherits(BarraNav, _Component2);
+
+	    function BarraNav(props) {
+	        _classCallCheck(this, BarraNav);
+
+	        return _possibleConstructorReturn(this, (BarraNav.__proto__ || Object.getPrototypeOf(BarraNav)).call(this, props));
+	    }
+
+	    _createClass(BarraNav, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'nav',
+	                { className: 'navbar navbar-default navbar-fixed-top' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'container-fluid' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'navbar-header' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { type: 'button', className: 'navbar-toggle', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1' },
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'sr-only' },
+	                                'Toggle navigation'
+	                            ),
+	                            _react2.default.createElement('span', { className: 'icon-bar' }),
+	                            _react2.default.createElement('span', { className: 'icon-bar' }),
+	                            _react2.default.createElement('span', { className: 'icon-bar' })
+	                        ),
+	                        _react2.default.createElement(
+	                            'a',
+	                            { onClick: this.props.newGame },
+	                            _react2.default.createElement('img', { alt: 'Zorogolf', className: 'imagenLogo', src: '../img/LogoletraClaro.png' })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	                        _react2.default.createElement(
+	                            'ul',
+	                            { className: 'nav navbar-nav' },
+	                            _react2.default.createElement(
+	                                'li',
+	                                { className: 'dropdown' },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { className: 'dropdown-toggle',
+	                                        'data-toggle': 'dropdown',
+	                                        role: 'button',
+	                                        'aria-haspopup': 'true',
+	                                        'aria-expanded': 'false' },
+	                                    'Game ',
+	                                    _react2.default.createElement('span', { className: 'caret' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'ul',
+	                                    { className: 'dropdown-menu' },
+	                                    _react2.default.createElement(
+	                                        'li',
+	                                        null,
+	                                        _react2.default.createElement(
+	                                            'a',
+	                                            { onClick: this.props.newGame },
+	                                            'New Game'
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        ),
+	                        _react2.default.createElement(_form_cuenta2.default, { cambiarPassword: this.props.cambiarPassword, login: this.props.login, crearCuenta: this.props.crearCuenta })
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return BarraNav;
+	}(_react.Component);
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(229);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CuentasWrapper = function (_Component) {
+	    _inherits(CuentasWrapper, _Component);
+
+	    function CuentasWrapper(props) {
+	        _classCallCheck(this, CuentasWrapper);
+
+	        var _this = _possibleConstructorReturn(this, (CuentasWrapper.__proto__ || Object.getPrototypeOf(CuentasWrapper)).call(this, props));
+
+	        _this.state = {
+	            crearCuenta: false
+	        };
+
+	        _this.crearCuentaTrue = _this.crearCuentaTrue.bind(_this);
+	        _this.crearCuentaFalse = _this.crearCuentaFalse.bind(_this);
+	        _this.handleClick = _this.handleClick.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(CuentasWrapper, [{
+	        key: 'crearCuentaTrue',
+	        value: function crearCuentaTrue() {
+	            this.setState({ crearCuenta: true });
+	            console.log(this.state);
+	        }
+	    }, {
+	        key: 'crearCuentaFalse',
+	        value: function crearCuentaFalse() {
+	            this.setState({ crearCuenta: false });
+	            console.log(this.state);
+	        }
+	    }, {
+	        key: 'handleClick',
+	        value: function handleClick(event) {
+	            console.log(event);
+	            event.preventDefault();
+	            event.stopPropagation();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var formulario = void 0;
+	            var userLogged = _react2.default.createElement(
+	                'ul',
+	                { className: 'nav navbar-nav navbar-right', onClick: this.handleClick },
+	                _react2.default.createElement(
+	                    'li',
+	                    { id: 'login-dropdown-list', className: 'dropdown' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { className: 'dropdown-toggle', 'data-toggle': 'dropdown', 'aria-expanded': 'false' },
+	                        this.props.usuario.name,
+	                        _react2.default.createElement('b', { className: 'caret' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'dropdown-menu' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-default btn-block', id: 'login-buttons-open-change-password', onClick: this.props.cambiarPassword },
+	                            'Change password'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-block btn-primary', id: 'login-buttons-logout', onClick: this.props.logout },
+	                            'Sign out'
+	                        )
+	                    )
+	                )
+	            );
+
+	            var login = _react2.default.createElement(
+	                'ul',
+	                { className: 'nav navbar-nav navbar-right', onClick: this.handleClick },
+	                _react2.default.createElement(
+	                    'li',
+	                    { id: 'login-dropdown-list', className: 'dropdown' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { className: 'dropdown-toggle', 'data-toggle': 'dropdown', 'aria-expanded': 'false' },
+	                        'Sign in / Join ',
+	                        _react2.default.createElement('b', { className: 'caret' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'dropdown-menu' },
+	                        _react2.default.createElement('input', { id: 'login-username', type: 'text', placeholder: 'Username', className: 'form-control' }),
+	                        _react2.default.createElement('input', { id: 'login-password', type: 'password', placeholder: 'Password', className: 'form-control', onClick: this.handleClick }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary col-xs-12 col-sm-12', id: 'login-buttons-password', type: 'button', onClick: this.props.login },
+	                            'Sign in'
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { id: 'login-other-options' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { id: 'signup-link', className: 'pull-right', onClick: this.crearCuentaTrue },
+	                                'Create account'
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+
+	            var crearCuenta = _react2.default.createElement(
+	                'ul',
+	                { className: 'nav navbar-nav navbar-right' },
+	                _react2.default.createElement(
+	                    'li',
+	                    { id: 'login-dropdown-list', className: 'dropdown active open' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { className: 'dropdown-toggle', 'data-toggle': 'dropdown', 'aria-expanded': 'false' },
+	                        'Sign in / Join ',
+	                        _react2.default.createElement('b', { className: 'caret' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'dropdown-menu' },
+	                        _react2.default.createElement('input', { id: 'login-username', type: 'text', placeholder: 'Username', className: 'form-control' }),
+	                        _react2.default.createElement('input', { id: 'login-password', type: 'password', placeholder: 'Password', className: 'form-control' }),
+	                        _react2.default.createElement('input', { id: 'login-password-again', type: 'password', placeholder: 'Password (again)', className: 'form-control' }),
+	                        _react2.default.createElement('input', { id: 'login-email', type: 'email', placeholder: 'Email', className: 'form-control' }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { className: 'btn btn-primary col-xs-12 col-sm-12', id: 'login-buttons-password', type: 'button', onClick: this.props.crearCuenta },
+	                            'Create'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { id: 'back-to-login-link', className: 'btn btn-default col-xs-12 col-sm-12', onClick: this.crearCuentaFalse },
+	                            'Cancel'
+	                        )
+	                    )
+	                )
+	            );
+	            formulario = this.props.usuario.logado ? userLogged : this.state.crearCuenta ? crearCuenta : login;
+
+	            return formulario;
+	        }
+	    }]);
+
+	    return CuentasWrapper;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	    return {
+	        usuario: state.usuario
+	    };
+	}
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        logout: function logout() {
+	            console.log("logout");
+	            dispatch((0, _accionesPartidas.userLogout)({}));
+	        }
+	    };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CuentasWrapper);
+
+/***/ },
+/* 272 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.userConectar = userConectar;
+	exports.userLogin = userLogin;
+	exports.userLogout = userLogout;
+	exports.empezarPartida = empezarPartida;
+	exports.nuevaPartida = nuevaPartida;
+	exports.nuevoJugador = nuevoJugador;
+	exports.addCampo = addCampo;
+	exports.coordenadasBandera = coordenadasBandera;
+	exports.sizeHoyo = sizeHoyo;
+	exports.setEstadoHoyo = setEstadoHoyo;
+	exports.actualizarJugadores = actualizarJugadores;
+	var ACCIONES_REDUX = exports.ACCIONES_REDUX = {
+	  CONECTAR: 'CONECTAR',
+	  LOGIN: 'LOGIN',
+	  LOGOUT: 'LOGOUT',
+	  SIGNUP: 'SIGNUP',
+	  EMPEZAR_PARTIDA: 'EMPEZAR_PARTIDA',
+	  NUEVA_PARTIDA: 'NUEVA_PARTIDA',
+	  NUEVO_JUGADOR: 'NUEVO_JUGADOR',
+	  ACTUALIZAR_JUGADORES: 'ACTUALIZAR_JUGADORES',
+	  ADD_CAMPO: 'ADD_CAMPO',
+	  COORDENADAS_BANDERA: 'COORDENADAS_BANDERA',
+	  SIZE_HOYO: 'SIZE_HOYO',
+	  ESTADO_HOYO: 'ESTADO_HOYO',
+	  GOLPE_INICIADO: 'GOLPE_INICIADO'
+	};
+
+	function userConectar(usuario) {
+	  return {
+	    type: ACCIONES_REDUX.CONECTAR,
+	    usuario: usuario
+	  };
+	}
+
+	function userLogin(usuario) {
+	  return {
+	    type: ACCIONES_REDUX.LOGIN,
+	    usuario: usuario
+	  };
+	}
+
+	function userLogout(usuario) {
+	  return {
+	    type: ACCIONES_REDUX.LOGOUT,
+	    usuario: usuario
+	  };
+	}
+
+	function empezarPartida(partida) {
+	  return {
+	    type: ACCIONES_REDUX.EMPEZAR_PARTIDA,
+	    partida: partida
+	  };
+	}
+
+	function nuevaPartida(partida) {
+	  return {
+	    type: ACCIONES_REDUX.NUEVA_PARTIDA,
+	    partida: partida
+	  };
+	}
+
+	function nuevoJugador(jugador) {
+	  return {
+	    type: ACCIONES_REDUX.NUEVO_JUGADOR,
+	    jugador: jugador
+	  };
+	}
+
+	function addCampo(hoyos) {
+	  return {
+	    type: ACCIONES_REDUX.ADD_CAMPO,
+	    hoyos: hoyos
+	  };
+	}
+
+	function coordenadasBandera(coordenadas) {
+	  return {
+	    type: ACCIONES_REDUX.COORDENADAS_BANDERA,
+	    coordenadas: coordenadas
+	  };
+	}
+
+	function sizeHoyo(size) {
+	  return {
+	    type: ACCIONES_REDUX.SIZE_HOYO,
+	    size: size
+	  };
+	}
+
+	function setEstadoHoyo(hoyo_actual) {
+	  return {
+	    type: ACCIONES_REDUX.ESTADO_HOYO,
+	    hoyo_actual: hoyo_actual
+	  };
+	}
+
+	function actualizarJugadores(jugadores) {
+	  return {
+	    type: ACCIONES_REDUX.ACTUALIZAR_JUGADORES,
+	    jugadores: jugadores
+	  };
+	}
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _redux = __webpack_require__(236);
+
+	var _reduxLogger = __webpack_require__(274);
+
+	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+
+	var _reduxThunk = __webpack_require__(280);
+
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+	var _reducer = __webpack_require__(281);
+
+	var _reducer2 = _interopRequireDefault(_reducer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// create a logger
+
+	var logger = (0, _reduxLogger2.default)();
+	var middleware = [_reduxThunk2.default, logger];
+
+	var Store = (0, _redux.createStore)(_reducer2.default, {}, _redux.applyMiddleware.apply(undefined, middleware));
+	exports.default = Store;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _core = __webpack_require__(275);
+
+	var _helpers = __webpack_require__(276);
+
+	var _defaults = __webpack_require__(279);
+
+	var _defaults2 = _interopRequireDefault(_defaults);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Creates logger with following options
+	 *
+	 * @namespace
+	 * @param {object} options - options for logger
+	 * @param {string | function | object} options.level - console[level]
+	 * @param {boolean} options.duration - print duration of each action?
+	 * @param {boolean} options.timestamp - print timestamp with each action?
+	 * @param {object} options.colors - custom colors
+	 * @param {object} options.logger - implementation of the `console` API
+	 * @param {boolean} options.logErrors - should errors in action execution be caught, logged, and re-thrown?
+	 * @param {boolean} options.collapsed - is group collapsed?
+	 * @param {boolean} options.predicate - condition which resolves logger behavior
+	 * @param {function} options.stateTransformer - transform state before print
+	 * @param {function} options.actionTransformer - transform action before print
+	 * @param {function} options.errorTransformer - transform error before print
+	 *
+	 * @returns {function} logger middleware
+	 */
+	function createLogger() {
+	  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  var loggerOptions = _extends({}, _defaults2.default, options);
+
+	  var logger = loggerOptions.logger;
+	  var transformer = loggerOptions.transformer;
+	  var stateTransformer = loggerOptions.stateTransformer;
+	  var errorTransformer = loggerOptions.errorTransformer;
+	  var predicate = loggerOptions.predicate;
+	  var logErrors = loggerOptions.logErrors;
+	  var diffPredicate = loggerOptions.diffPredicate;
+
+	  // Return if 'console' object is not defined
+
+	  if (typeof logger === 'undefined') {
+	    return function () {
+	      return function (next) {
+	        return function (action) {
+	          return next(action);
+	        };
+	      };
+	    };
+	  }
+
+	  if (transformer) {
+	    console.error('Option \'transformer\' is deprecated, use \'stateTransformer\' instead!'); // eslint-disable-line no-console
+	  }
+
+	  var logBuffer = [];
+
+	  return function (_ref) {
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        // Exit early if predicate function returns 'false'
+	        if (typeof predicate === 'function' && !predicate(getState, action)) {
+	          return next(action);
+	        }
+
+	        var logEntry = {};
+	        logBuffer.push(logEntry);
+
+	        logEntry.started = _helpers.timer.now();
+	        logEntry.startedTime = new Date();
+	        logEntry.prevState = stateTransformer(getState());
+	        logEntry.action = action;
+
+	        var returnedValue = undefined;
+	        if (logErrors) {
+	          try {
+	            returnedValue = next(action);
+	          } catch (e) {
+	            logEntry.error = errorTransformer(e);
+	          }
+	        } else {
+	          returnedValue = next(action);
+	        }
+
+	        logEntry.took = _helpers.timer.now() - logEntry.started;
+	        logEntry.nextState = stateTransformer(getState());
+
+	        var diff = loggerOptions.diff && typeof diffPredicate === 'function' ? diffPredicate(getState, action) : loggerOptions.diff;
+
+	        (0, _core.printBuffer)(logBuffer, _extends({}, loggerOptions, { diff: diff }));
+	        logBuffer.length = 0;
+
+	        if (logEntry.error) throw logEntry.error;
+	        return returnedValue;
+	      };
+	    };
+	  };
+	}
+
+	exports.default = createLogger;
+	module.exports = exports['default'];
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.printBuffer = printBuffer;
+
+	var _helpers = __webpack_require__(276);
+
+	var _diff = __webpack_require__(277);
+
+	var _diff2 = _interopRequireDefault(_diff);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
+	/**
+	 * Get log level string based on supplied params
+	 *
+	 * @param {string | function | object} level - console[level]
+	 * @param {object} action - selected action
+	 * @param {array} payload - selected payload
+	 * @param {string} type - log entry type
+	 *
+	 * @returns {string} level
+	 */
+	function getLogLevel(level, action, payload, type) {
+	  switch (typeof level === 'undefined' ? 'undefined' : _typeof(level)) {
+	    case 'object':
+	      return typeof level[type] === 'function' ? level[type].apply(level, _toConsumableArray(payload)) : level[type];
+	    case 'function':
+	      return level(action);
+	    default:
+	      return level;
+	  }
+	}
+
+	function defaultTitleFormatter(options) {
+	  var timestamp = options.timestamp;
+	  var duration = options.duration;
+
+	  return function (action, time, took) {
+	    var parts = ['action'];
+	    if (timestamp) {
+	      parts.push('@ ' + time);
+	    }
+	    parts.push(action.type);
+	    if (duration) {
+	      parts.push('(in ' + took.toFixed(2) + ' ms)');
+	    }
+	    return parts.join(' ');
+	  };
+	}
+
+	function printBuffer(buffer, options) {
+	  var logger = options.logger;
+	  var actionTransformer = options.actionTransformer;
+	  var _options$titleFormatt = options.titleFormatter;
+	  var titleFormatter = _options$titleFormatt === undefined ? defaultTitleFormatter(options) : _options$titleFormatt;
+	  var collapsed = options.collapsed;
+	  var colors = options.colors;
+	  var level = options.level;
+	  var diff = options.diff;
+
+	  buffer.forEach(function (logEntry, key) {
+	    var started = logEntry.started;
+	    var startedTime = logEntry.startedTime;
+	    var action = logEntry.action;
+	    var prevState = logEntry.prevState;
+	    var error = logEntry.error;
+	    var took = logEntry.took;
+	    var nextState = logEntry.nextState;
+
+	    var nextEntry = buffer[key + 1];
+
+	    if (nextEntry) {
+	      nextState = nextEntry.prevState;
+	      took = nextEntry.started - started;
+	    }
+
+	    // Message
+	    var formattedAction = actionTransformer(action);
+	    var isCollapsed = typeof collapsed === 'function' ? collapsed(function () {
+	      return nextState;
+	    }, action) : collapsed;
+
+	    var formattedTime = (0, _helpers.formatTime)(startedTime);
+	    var titleCSS = colors.title ? 'color: ' + colors.title(formattedAction) + ';' : null;
+	    var title = titleFormatter(formattedAction, formattedTime, took);
+
+	    // Render
+	    try {
+	      if (isCollapsed) {
+	        if (colors.title) logger.groupCollapsed('%c ' + title, titleCSS);else logger.groupCollapsed(title);
+	      } else {
+	        if (colors.title) logger.group('%c ' + title, titleCSS);else logger.group(title);
+	      }
+	    } catch (e) {
+	      logger.log(title);
+	    }
+
+	    var prevStateLevel = getLogLevel(level, formattedAction, [prevState], 'prevState');
+	    var actionLevel = getLogLevel(level, formattedAction, [formattedAction], 'action');
+	    var errorLevel = getLogLevel(level, formattedAction, [error, prevState], 'error');
+	    var nextStateLevel = getLogLevel(level, formattedAction, [nextState], 'nextState');
+
+	    if (prevStateLevel) {
+	      if (colors.prevState) logger[prevStateLevel]('%c prev state', 'color: ' + colors.prevState(prevState) + '; font-weight: bold', prevState);else logger[prevStateLevel]('prev state', prevState);
+	    }
+
+	    if (actionLevel) {
+	      if (colors.action) logger[actionLevel]('%c action', 'color: ' + colors.action(formattedAction) + '; font-weight: bold', formattedAction);else logger[actionLevel]('action', formattedAction);
+	    }
+
+	    if (error && errorLevel) {
+	      if (colors.error) logger[errorLevel]('%c error', 'color: ' + colors.error(error, prevState) + '; font-weight: bold', error);else logger[errorLevel]('error', error);
+	    }
+
+	    if (nextStateLevel) {
+	      if (colors.nextState) logger[nextStateLevel]('%c next state', 'color: ' + colors.nextState(nextState) + '; font-weight: bold', nextState);else logger[nextStateLevel]('next state', nextState);
+	    }
+
+	    if (diff) {
+	      (0, _diff2.default)(prevState, nextState, logger, isCollapsed);
+	    }
+
+	    try {
+	      logger.groupEnd();
+	    } catch (e) {
+	      logger.log('—— log end ——');
+	    }
+	  });
+	}
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var repeat = exports.repeat = function repeat(str, times) {
+	  return new Array(times + 1).join(str);
+	};
+
+	var pad = exports.pad = function pad(num, maxLength) {
+	  return repeat("0", maxLength - num.toString().length) + num;
+	};
+
+	var formatTime = exports.formatTime = function formatTime(time) {
+	  return pad(time.getHours(), 2) + ":" + pad(time.getMinutes(), 2) + ":" + pad(time.getSeconds(), 2) + "." + pad(time.getMilliseconds(), 3);
+	};
+
+	// Use performance API if it's available in order to get better precision
+	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = diffLogger;
+
+	var _deepDiff = __webpack_require__(278);
+
+	var _deepDiff2 = _interopRequireDefault(_deepDiff);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// https://github.com/flitbit/diff#differences
+	var dictionary = {
+	  'E': {
+	    color: '#2196F3',
+	    text: 'CHANGED:'
+	  },
+	  'N': {
+	    color: '#4CAF50',
+	    text: 'ADDED:'
+	  },
+	  'D': {
+	    color: '#F44336',
+	    text: 'DELETED:'
+	  },
+	  'A': {
+	    color: '#2196F3',
+	    text: 'ARRAY:'
+	  }
+	};
+
+	function style(kind) {
+	  return 'color: ' + dictionary[kind].color + '; font-weight: bold';
+	}
+
+	function render(diff) {
+	  var kind = diff.kind;
+	  var path = diff.path;
+	  var lhs = diff.lhs;
+	  var rhs = diff.rhs;
+	  var index = diff.index;
+	  var item = diff.item;
+
+	  switch (kind) {
+	    case 'E':
+	      return path.join('.') + ' ' + lhs + ' → ' + rhs;
+	    case 'N':
+	      return path.join('.') + ' ' + rhs;
+	    case 'D':
+	      return '' + path.join('.');
+	    case 'A':
+	      return [path.join('.') + '[' + index + ']', item];
+	    default:
+	      return null;
+	  }
+	}
+
+	function diffLogger(prevState, newState, logger, isCollapsed) {
+	  var diff = (0, _deepDiff2.default)(prevState, newState);
+
+	  try {
+	    if (isCollapsed) {
+	      logger.groupCollapsed('diff');
+	    } else {
+	      logger.group('diff');
+	    }
+	  } catch (e) {
+	    logger.log('diff');
+	  }
+
+	  if (diff) {
+	    diff.forEach(function (elem) {
+	      var kind = elem.kind;
+
+	      var output = render(elem);
+
+	      logger.log('%c ' + dictionary[kind].text, style(kind), output);
+	    });
+	  } else {
+	    logger.log('—— no diff ——');
+	  }
+
+	  try {
+	    logger.groupEnd();
+	  } catch (e) {
+	    logger.log('—— diff end —— ');
+	  }
+	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
+	 * deep-diff.
+	 * Licensed under the MIT License.
+	 */
+	;(function(root, factory) {
+	  'use strict';
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	      return factory();
+	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like environments that support module.exports,
+	    // like Node.
+	    module.exports = factory();
+	  } else {
+	    // Browser globals (root is window)
+	    root.DeepDiff = factory();
+	  }
+	}(this, function(undefined) {
+	  'use strict';
+
+	  var $scope, conflict, conflictResolution = [];
+	  if (typeof global === 'object' && global) {
+	    $scope = global;
+	  } else if (typeof window !== 'undefined') {
+	    $scope = window;
+	  } else {
+	    $scope = {};
+	  }
+	  conflict = $scope.DeepDiff;
+	  if (conflict) {
+	    conflictResolution.push(
+	      function() {
+	        if ('undefined' !== typeof conflict && $scope.DeepDiff === accumulateDiff) {
+	          $scope.DeepDiff = conflict;
+	          conflict = undefined;
+	        }
+	      });
+	  }
+
+	  // nodejs compatible on server side and in the browser.
+	  function inherits(ctor, superCtor) {
+	    ctor.super_ = superCtor;
+	    ctor.prototype = Object.create(superCtor.prototype, {
+	      constructor: {
+	        value: ctor,
+	        enumerable: false,
+	        writable: true,
+	        configurable: true
+	      }
+	    });
+	  }
+
+	  function Diff(kind, path) {
+	    Object.defineProperty(this, 'kind', {
+	      value: kind,
+	      enumerable: true
+	    });
+	    if (path && path.length) {
+	      Object.defineProperty(this, 'path', {
+	        value: path,
+	        enumerable: true
+	      });
+	    }
+	  }
+
+	  function DiffEdit(path, origin, value) {
+	    DiffEdit.super_.call(this, 'E', path);
+	    Object.defineProperty(this, 'lhs', {
+	      value: origin,
+	      enumerable: true
+	    });
+	    Object.defineProperty(this, 'rhs', {
+	      value: value,
+	      enumerable: true
+	    });
+	  }
+	  inherits(DiffEdit, Diff);
+
+	  function DiffNew(path, value) {
+	    DiffNew.super_.call(this, 'N', path);
+	    Object.defineProperty(this, 'rhs', {
+	      value: value,
+	      enumerable: true
+	    });
+	  }
+	  inherits(DiffNew, Diff);
+
+	  function DiffDeleted(path, value) {
+	    DiffDeleted.super_.call(this, 'D', path);
+	    Object.defineProperty(this, 'lhs', {
+	      value: value,
+	      enumerable: true
+	    });
+	  }
+	  inherits(DiffDeleted, Diff);
+
+	  function DiffArray(path, index, item) {
+	    DiffArray.super_.call(this, 'A', path);
+	    Object.defineProperty(this, 'index', {
+	      value: index,
+	      enumerable: true
+	    });
+	    Object.defineProperty(this, 'item', {
+	      value: item,
+	      enumerable: true
+	    });
+	  }
+	  inherits(DiffArray, Diff);
+
+	  function arrayRemove(arr, from, to) {
+	    var rest = arr.slice((to || from) + 1 || arr.length);
+	    arr.length = from < 0 ? arr.length + from : from;
+	    arr.push.apply(arr, rest);
+	    return arr;
+	  }
+
+	  function realTypeOf(subject) {
+	    var type = typeof subject;
+	    if (type !== 'object') {
+	      return type;
+	    }
+
+	    if (subject === Math) {
+	      return 'math';
+	    } else if (subject === null) {
+	      return 'null';
+	    } else if (Array.isArray(subject)) {
+	      return 'array';
+	    } else if (Object.prototype.toString.call(subject) === '[object Date]') {
+	      return 'date';
+	    } else if (typeof subject.toString !== 'undefined' && /^\/.*\//.test(subject.toString())) {
+	      return 'regexp';
+	    }
+	    return 'object';
+	  }
+
+	  function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
+	    path = path || [];
+	    var currentPath = path.slice(0);
+	    if (typeof key !== 'undefined') {
+	      if (prefilter) {
+	        if (typeof(prefilter) === 'function' && prefilter(currentPath, key)) { return; }
+	        else if (typeof(prefilter) === 'object') {
+	          if (prefilter.prefilter && prefilter.prefilter(currentPath, key)) { return; }
+	          if (prefilter.normalize) {
+	            var alt = prefilter.normalize(currentPath, key, lhs, rhs);
+	            if (alt) {
+	              lhs = alt[0];
+	              rhs = alt[1];
+	            }
+	          }
+	        }
+	      }
+	      currentPath.push(key);
+	    }
+
+	    // Use string comparison for regexes
+	    if (realTypeOf(lhs) === 'regexp' && realTypeOf(rhs) === 'regexp') {
+	      lhs = lhs.toString();
+	      rhs = rhs.toString();
+	    }
+
+	    var ltype = typeof lhs;
+	    var rtype = typeof rhs;
+	    if (ltype === 'undefined') {
+	      if (rtype !== 'undefined') {
+	        changes(new DiffNew(currentPath, rhs));
+	      }
+	    } else if (rtype === 'undefined') {
+	      changes(new DiffDeleted(currentPath, lhs));
+	    } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
+	      changes(new DiffEdit(currentPath, lhs, rhs));
+	    } else if (Object.prototype.toString.call(lhs) === '[object Date]' && Object.prototype.toString.call(rhs) === '[object Date]' && ((lhs - rhs) !== 0)) {
+	      changes(new DiffEdit(currentPath, lhs, rhs));
+	    } else if (ltype === 'object' && lhs !== null && rhs !== null) {
+	      stack = stack || [];
+	      if (stack.indexOf(lhs) < 0) {
+	        stack.push(lhs);
+	        if (Array.isArray(lhs)) {
+	          var i, len = lhs.length;
+	          for (i = 0; i < lhs.length; i++) {
+	            if (i >= rhs.length) {
+	              changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
+	            } else {
+	              deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack);
+	            }
+	          }
+	          while (i < rhs.length) {
+	            changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i++])));
+	          }
+	        } else {
+	          var akeys = Object.keys(lhs);
+	          var pkeys = Object.keys(rhs);
+	          akeys.forEach(function(k, i) {
+	            var other = pkeys.indexOf(k);
+	            if (other >= 0) {
+	              deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack);
+	              pkeys = arrayRemove(pkeys, other);
+	            } else {
+	              deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack);
+	            }
+	          });
+	          pkeys.forEach(function(k) {
+	            deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack);
+	          });
+	        }
+	        stack.length = stack.length - 1;
+	      }
+	    } else if (lhs !== rhs) {
+	      if (!(ltype === 'number' && isNaN(lhs) && isNaN(rhs))) {
+	        changes(new DiffEdit(currentPath, lhs, rhs));
+	      }
+	    }
+	  }
+
+	  function accumulateDiff(lhs, rhs, prefilter, accum) {
+	    accum = accum || [];
+	    deepDiff(lhs, rhs,
+	      function(diff) {
+	        if (diff) {
+	          accum.push(diff);
+	        }
+	      },
+	      prefilter);
+	    return (accum.length) ? accum : undefined;
+	  }
+
+	  function applyArrayChange(arr, index, change) {
+	    if (change.path && change.path.length) {
+	      var it = arr[index],
+	          i, u = change.path.length - 1;
+	      for (i = 0; i < u; i++) {
+	        it = it[change.path[i]];
+	      }
+	      switch (change.kind) {
+	        case 'A':
+	          applyArrayChange(it[change.path[i]], change.index, change.item);
+	          break;
+	        case 'D':
+	          delete it[change.path[i]];
+	          break;
+	        case 'E':
+	        case 'N':
+	          it[change.path[i]] = change.rhs;
+	          break;
+	      }
+	    } else {
+	      switch (change.kind) {
+	        case 'A':
+	          applyArrayChange(arr[index], change.index, change.item);
+	          break;
+	        case 'D':
+	          arr = arrayRemove(arr, index);
+	          break;
+	        case 'E':
+	        case 'N':
+	          arr[index] = change.rhs;
+	          break;
+	      }
+	    }
+	    return arr;
+	  }
+
+	  function applyChange(target, source, change) {
+	    if (target && source && change && change.kind) {
+	      var it = target,
+	          i = -1,
+	          last = change.path ? change.path.length - 1 : 0;
+	      while (++i < last) {
+	        if (typeof it[change.path[i]] === 'undefined') {
+	          it[change.path[i]] = (typeof change.path[i] === 'number') ? [] : {};
+	        }
+	        it = it[change.path[i]];
+	      }
+	      switch (change.kind) {
+	        case 'A':
+	          applyArrayChange(change.path ? it[change.path[i]] : it, change.index, change.item);
+	          break;
+	        case 'D':
+	          delete it[change.path[i]];
+	          break;
+	        case 'E':
+	        case 'N':
+	          it[change.path[i]] = change.rhs;
+	          break;
+	      }
+	    }
+	  }
+
+	  function revertArrayChange(arr, index, change) {
+	    if (change.path && change.path.length) {
+	      // the structure of the object at the index has changed...
+	      var it = arr[index],
+	          i, u = change.path.length - 1;
+	      for (i = 0; i < u; i++) {
+	        it = it[change.path[i]];
+	      }
+	      switch (change.kind) {
+	        case 'A':
+	          revertArrayChange(it[change.path[i]], change.index, change.item);
+	          break;
+	        case 'D':
+	          it[change.path[i]] = change.lhs;
+	          break;
+	        case 'E':
+	          it[change.path[i]] = change.lhs;
+	          break;
+	        case 'N':
+	          delete it[change.path[i]];
+	          break;
+	      }
+	    } else {
+	      // the array item is different...
+	      switch (change.kind) {
+	        case 'A':
+	          revertArrayChange(arr[index], change.index, change.item);
+	          break;
+	        case 'D':
+	          arr[index] = change.lhs;
+	          break;
+	        case 'E':
+	          arr[index] = change.lhs;
+	          break;
+	        case 'N':
+	          arr = arrayRemove(arr, index);
+	          break;
+	      }
+	    }
+	    return arr;
+	  }
+
+	  function revertChange(target, source, change) {
+	    if (target && source && change && change.kind) {
+	      var it = target,
+	          i, u;
+	      u = change.path.length - 1;
+	      for (i = 0; i < u; i++) {
+	        if (typeof it[change.path[i]] === 'undefined') {
+	          it[change.path[i]] = {};
+	        }
+	        it = it[change.path[i]];
+	      }
+	      switch (change.kind) {
+	        case 'A':
+	          // Array was modified...
+	          // it will be an array...
+	          revertArrayChange(it[change.path[i]], change.index, change.item);
+	          break;
+	        case 'D':
+	          // Item was deleted...
+	          it[change.path[i]] = change.lhs;
+	          break;
+	        case 'E':
+	          // Item was edited...
+	          it[change.path[i]] = change.lhs;
+	          break;
+	        case 'N':
+	          // Item is new...
+	          delete it[change.path[i]];
+	          break;
+	      }
+	    }
+	  }
+
+	  function applyDiff(target, source, filter) {
+	    if (target && source) {
+	      var onChange = function(change) {
+	        if (!filter || filter(target, source, change)) {
+	          applyChange(target, source, change);
+	        }
+	      };
+	      deepDiff(target, source, onChange);
+	    }
+	  }
+
+	  Object.defineProperties(accumulateDiff, {
+
+	    diff: {
+	      value: accumulateDiff,
+	      enumerable: true
+	    },
+	    observableDiff: {
+	      value: deepDiff,
+	      enumerable: true
+	    },
+	    applyDiff: {
+	      value: applyDiff,
+	      enumerable: true
+	    },
+	    applyChange: {
+	      value: applyChange,
+	      enumerable: true
+	    },
+	    revertChange: {
+	      value: revertChange,
+	      enumerable: true
+	    },
+	    isConflict: {
+	      value: function() {
+	        return 'undefined' !== typeof conflict;
+	      },
+	      enumerable: true
+	    },
+	    noConflict: {
+	      value: function() {
+	        if (conflictResolution) {
+	          conflictResolution.forEach(function(it) {
+	            it();
+	          });
+	          conflictResolution = null;
+	        }
+	        return accumulateDiff;
+	      },
+	      enumerable: true
+	    }
+	  });
+
+	  return accumulateDiff;
+	}));
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 279 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  level: "log",
+	  logger: console,
+	  logErrors: true,
+	  collapsed: undefined,
+	  predicate: undefined,
+	  duration: false,
+	  timestamp: true,
+	  stateTransformer: function stateTransformer(state) {
+	    return state;
+	  },
+	  actionTransformer: function actionTransformer(action) {
+	    return action;
+	  },
+	  errorTransformer: function errorTransformer(error) {
+	    return error;
+	  },
+	  colors: {
+	    title: function title() {
+	      return "inherit";
+	    },
+	    prevState: function prevState() {
+	      return "#9E9E9E";
+	    },
+	    action: function action() {
+	      return "#03A9F4";
+	    },
+	    nextState: function nextState() {
+	      return "#4CAF50";
+	    },
+	    error: function error() {
+	      return "#F20404";
+	    }
+	  },
+	  diff: false,
+	  diffPredicate: undefined,
+
+	  // Deprecated options
+	  transformer: undefined
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 280 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //noinspection JSUnresolvedVariable
+
+
+	var _redux = __webpack_require__(236);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var initialState = { empezar: true };
+	var inicioUsuario = {
+	  conectado: false,
+	  logado: false,
+	  crearCuenta: false
+	};
+
+	var usuario = function usuario() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : inicioUsuario;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _accionesPartidas.ACCIONES_REDUX.CONECTAR:
+	      return _extends({}, state, {
+	        conectado: true
+	      });
+	    case _accionesPartidas.ACCIONES_REDUX.LOGIN:
+	      return _extends({}, state, {
+	        logado: true,
+	        name: action.usuario.name,
+	        token: action.usuario.token
+	      });
+	    case _accionesPartidas.ACCIONES_REDUX.LOGOUT:
+	      return _extends({}, state, {
+	        logado: false
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	var datos = function datos() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _accionesPartidas.ACCIONES_REDUX.LOGOUT:
+	    case _accionesPartidas.ACCIONES_REDUX.EMPEZAR_PARTIDA:
+	      return {
+	        empezar: true
+	      };
+	    case _accionesPartidas.ACCIONES_REDUX.NUEVA_PARTIDA:
+	      return {
+	        empezar: false,
+	        id: action.partida.id,
+	        nombre: action.partida.nombre,
+	        jugadores: action.partida.jugadores,
+	        campo: action.partida.campo
+	      };
+	    case _accionesPartidas.ACCIONES_REDUX.NUEVO_JUGADOR:
+	      return _extends({}, state, {
+	        jugadores: [].concat(_toConsumableArray(state.jugadores), [action.jugador])
+	      });
+	    case _accionesPartidas.ACCIONES_REDUX.COORDENADAS_BANDERA:
+	      return _extends({}, state, {
+	        coordenadas_bandera: action.coordenadas
+	      });
+	    case _accionesPartidas.ACCIONES_REDUX.SIZE_HOYO:
+	      return _extends({}, state, {
+	        size: action.size
+	      });
+	    case _accionesPartidas.ACCIONES_REDUX.ACTUALIZAR_JUGADORES:
+	      return _extends({}, state, {
+	        jugadores: action.jugadores
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	var hoyos = function hoyos() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _accionesPartidas.ACCIONES_REDUX.LOGOUT:
+	    case _accionesPartidas.ACCIONES_REDUX.EMPEZAR_PARTIDA:
+	      return null;
+	    case _accionesPartidas.ACCIONES_REDUX.NUEVA_PARTIDA:
+	      return action.partida.hoyos ? action.partida.hoyos : null;
+	    case _accionesPartidas.ACCIONES_REDUX.ADD_CAMPO:
+	      return action.hoyos;
+	    default:
+	      return state;
+	  }
+	};
+
+	var hoyo_actual = function hoyo_actual() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _accionesPartidas.ACCIONES_REDUX.LOGOUT:
+	    case _accionesPartidas.ACCIONES_REDUX.EMPEZAR_PARTIDA:
+	      return null;
+	    case _accionesPartidas.ACCIONES_REDUX.NUEVA_PARTIDA:
+	      return action.partida.hoyo_actual ? action.partida.hoyo_actual : null;
+	    case _accionesPartidas.ACCIONES_REDUX.ESTADO_HOYO:
+	      return action.hoyo_actual;
+	    case _accionesPartidas.ACCIONES_REDUX.GOLPE_INICIADO:
+	      return action.hoyo_actual;
+	    default:
+	      return state;
+	  }
+	};
+
+	var eventos = function eventos() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _accionesPartidas.ACCIONES_REDUX.NUEVA_PARTIDA:
+	      return action.partida.eventos;
+	    default:
+	      return state;
+	  }
+	};
+
+	var rootReducer = (0, _redux.combineReducers)({
+	  usuario: usuario,
+	  datos: datos,
+	  hoyos: hoyos,
+	  hoyo_actual: hoyo_actual,
+	  eventos: eventos
+	});
+
+	exports.default = rootReducer;
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRedux = __webpack_require__(229);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _lista_partidas = __webpack_require__(283);
+
+	var _lista_partidas2 = _interopRequireDefault(_lista_partidas);
+
+	var _lista_jugadores = __webpack_require__(287);
+
+	var _lista_jugadores2 = _interopRequireDefault(_lista_jugadores);
+
+	var _crear_partida = __webpack_require__(288);
+
+	var _crear_partida2 = _interopRequireDefault(_crear_partida);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	var _constantes = __webpack_require__(286);
+
+	var _sesion = __webpack_require__(289);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PartidasUI = function (_Component) {
+	    _inherits(PartidasUI, _Component);
+
+	    function PartidasUI(props) {
+	        _classCallCheck(this, PartidasUI);
+
+	        var _this = _possibleConstructorReturn(this, (PartidasUI.__proto__ || Object.getPrototypeOf(PartidasUI)).call(this, props));
+
+	        _this.state = {};
+	        _this.partida = _this.partida.bind(_this);
+	        _this.nuevaPartida = _this.nuevaPartida.bind(_this);
+	        _this.nuevoJugador = _this.nuevoJugador.bind(_this);
+	        _this.addCampo = _this.addCampo.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(PartidasUI, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            (0, _sesion.inicio)();
+	        }
+	    }, {
+	        key: 'partida',
+	        value: function partida() {
+	            //return Partidas.find(this.props.datos.id).fetch()[0]
+	        }
+	    }, {
+	        key: 'nuevaPartida',
+	        value: function nuevaPartida(partida) {
+	            this.props.dispatch((0, _accionesPartidas.nuevaPartida)(partida));
+	        }
+	    }, {
+	        key: 'nuevoJugador',
+	        value: function nuevoJugador(jugador) {
+	            this.props.dispatch((0, _accionesPartidas.nuevoJugador)(jugador));
+	        }
+	    }, {
+	        key: 'addCampo',
+	        value: function addCampo(campo) {
+	            this.props.dispatch((0, _accionesPartidas.addCampo)(campo));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var part = !this.props.datos.empezar ? this.partida() : {};
+	            var crearPartida = this.props.usuario.logado ? _react2.default.createElement(_crear_partida2.default, null) : _react2.default.createElement(
+	                'h1',
+	                null,
+	                'Sign in to start'
+	            );
+	            var mostrar = !this.props.datos.empezar ? _react2.default.createElement(_lista_jugadores2.default, { id: part._id, jugadores: part.jugadores, campo: part.campo, nombre: part.nombre, funcionJ: _accionesPartidas.nuevoJugador, funcionC: _accionesPartidas.addCampo }) : crearPartida;
+
+	            var lista = [];
+	            if (this.props.usuario.logado) {
+	                lista.push(_react2.default.createElement(_lista_partidas2.default, { key: 'SE', lista: _constantes.LISTA_PARTIDAS.SIN_EMPEZAR, usuario: this.props.usuario, funcionJ: _accionesPartidas.nuevoJugador, funcionP: _accionesPartidas.nuevaPartida }));
+	                lista.push(_react2.default.createElement(_lista_partidas2.default, { key: 'PR', lista: _constantes.LISTA_PARTIDAS.PROPIAS, usuario: this.props.usuario }));
+	            }
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'container enlinea' },
+	                mostrar,
+	                lista
+	            );
+	        }
+	    }]);
+
+	    return PartidasUI;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	    return {
+	        usuario: state.usuario,
+	        datos: state.datos
+	    };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(PartidasUI);
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _item_partida = __webpack_require__(284);
+
+	var _item_partida2 = _interopRequireDefault(_item_partida);
+
+	var _constantes = __webpack_require__(286);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import Partidas from '../api/colecciones'
+
+
+	// Clase Lista de Partidas
+	var ListaPartidas = function (_Component) {
+	  _inherits(ListaPartidas, _Component);
+
+	  function ListaPartidas(props) {
+	    _classCallCheck(this, ListaPartidas);
+
+	    var _this = _possibleConstructorReturn(this, (ListaPartidas.__proto__ || Object.getPrototypeOf(ListaPartidas)).call(this, props));
+
+	    _this.state = {};
+	    return _this;
+	  }
+
+	  _createClass(ListaPartidas, [{
+	    key: 'partidas',
+	    value: function partidas() {
+	      var filtroSE = this.props.usuario.logado ? { jugadores: { $not: { $elemMatch: { nombre: this.props.usuario.username } } }, "jugadores.3": { $exists: false } } : { "jugadores.3": { $exists: false } };
+	      var filtroPR = this.props.usuario.logado ? { "jugadores.nombre": this.props.usuario.username } : {};
+	      var filtro = this.props.lista === _constantes.LISTA_PARTIDAS.SIN_EMPEZAR ? filtroSE : filtroPR;
+	      //return Partidas.find(filtro).fetch();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var titulo = this.props.lista === _constantes.LISTA_PARTIDAS.SIN_EMPEZAR ? "Games waiting players" : this.props.usuario.logado ? this.props.usuario.username : "";
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'container-fluid col-xs-8 col-md-6 col-sd-6 col-lg-5 margen-top20' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'panel panel-default' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'panel-heading' },
+	            titulo
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'panel-body' },
+	            this.partidas().map(function (partida, indice) {
+	              return _react2.default.createElement(_item_partida2.default, { key: partida._id, partida: partida, indice: indice, lista: _this2.props.lista });
+	            })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ListaPartidas;
+	}(_react.Component);
+
+	exports.default = ListaPartidas;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRedux = __webpack_require__(229);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(173);
+
+	var _color = __webpack_require__(285);
+
+	var _color2 = _interopRequireDefault(_color);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	var _constantes = __webpack_require__(286);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemPartida = function (_Component) {
+	  _inherits(ItemPartida, _Component);
+
+	  function ItemPartida(props) {
+	    _classCallCheck(this, ItemPartida);
+
+	    var _this = _possibleConstructorReturn(this, (ItemPartida.__proto__ || Object.getPrototypeOf(ItemPartida)).call(this, props));
+
+	    _this.state = {
+	      color: "Red",
+	      display: "none",
+	      listaColores: _constantes.COLORES.concat()
+	    };
+
+	    _this.setColor = _this.setColor.bind(_this);
+	    _this.unirse = _this.unirse.bind(_this);
+	    _this.mostrar = _this.mostrar.bind(_this);
+	    _this.cambiarPartida = _this.cambiarPartida.bind(_this);
+	    _this.actualizarListaColores = _this.actualizarListaColores.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(ItemPartida, [{
+	    key: 'actualizarListaColores',
+	    value: function actualizarListaColores(jugadores) {
+	      var lista = this.state.listaColores.concat();
+	      for (var i = 0; i < jugadores.length; i++) {
+	        var index = lista.indexOf(jugadores[i].color);
+	        if (index > -1) lista.splice(index, 1);
+	      }
+	      this.setState({ listaColores: lista });
+	      this.setState({ color: lista[0] });
+	    }
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.actualizarListaColores(this.props.partida.jugadores);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      this.actualizarListaColores(nextProps.partida.jugadores);
+	    }
+	  }, {
+	    key: 'mostrar',
+	    value: function mostrar() {
+	      this.setState({ display: this.state.display === 'none' ? 'inline' : 'none' });
+	    }
+	  }, {
+	    key: 'setColor',
+	    value: function setColor(color) {
+	      this.setState({ color: color });
+	    }
+	  }, {
+	    key: 'unirse',
+	    value: function unirse(e) {
+	      e.preventDefault();
+	      var jugador = {};
+	      jugador.nombre = Meteor.user().username;
+	      jugador.color = this.state.color;
+	      Meteor.call('addJugador', jugador, this.props.partida._id);
+	      var part = this.props.partida;
+	      part.id = this.props.partida._id;
+	      this.props.dispatch((0, _accionesPartidas.nuevaPartida)(part));
+	    }
+	  }, {
+	    key: 'cambiarPartida',
+	    value: function cambiarPartida(e) {
+	      e.preventDefault();
+	      var part = this.props.partida;
+	      part.id = this.props.partida._id;
+	      this.props.dispatch((0, _accionesPartidas.nuevaPartida)(part));
+	      if (this.props.partida.jugadores.length === 4) {
+	        _reactRouter.browserHistory.push('/Partida/' + this.props.partida._id);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var accion = [];
+	      if (this.props.lista === _constantes.LISTA_PARTIDAS.SIN_EMPEZAR) {
+	        accion.push(_react2.default.createElement(
+	          'div',
+	          { key: "1", className: 'row-fluid form-group' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-4 col-lg-3 text-right' },
+	            _react2.default.createElement(
+	              'label',
+	              { 'for': 'color', className: 'control-label' },
+	              'Choose Color'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-4 col-lg-4' },
+	            _react2.default.createElement(_color2.default, { setColor: this.setColor, colores: this.state.listaColores, indice: this.props.indice })
+	          )
+	        ));
+
+	        accion.push(_react2.default.createElement(
+	          'div',
+	          { key: "2", className: 'row-fluid form-group' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-4 col-xs-offset-4 col-lg-4 col-lg-offset-3 margen-top20' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'btn btn-success', type: 'submit', onClick: this.unirse },
+	              'Join'
+	            )
+	          )
+	        ));
+	      } else {
+	        accion.push(_react2.default.createElement(
+	          'div',
+	          { key: "1", className: 'row-fluid col-xs-8 col-md-10 col-sd-8 col-lg-10' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-4 col-xs-offset-3 col-lg-4' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'btn btn-success', type: 'submit', onClick: this.cambiarPartida },
+	              'Go'
+	            )
+	          )
+	        ));
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-xs-8 col-lg-6' },
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'control-label clickable', onClick: this.mostrar },
+	            this.props.partida.nombre
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-xs-4 col-lg-3' },
+	          _react2.default.createElement(
+	            'label',
+	            { className: 'control-label' },
+	            this.props.partida.jugadores.length,
+	            ' players'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'col-xs-12 col-lg-12 margen-top20', style: { display: this.state.display } },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'panel panel-default wheat' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'panel-heading' },
+	              this.props.partida.nombre
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'panel-body' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row-fluid col-xs-8 col-md-10 col-sd-8 col-lg-10' },
+	                this.props.partida.jugadores.map(function (jugador) {
+	                  return _react2.default.createElement(
+	                    'div',
+	                    { key: jugador.nombre },
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'col-xs-10 col-lg-5 col-lg-offset-3' },
+	                      _react2.default.createElement(
+	                        'label',
+	                        { 'for': 'color', className: 'control-label' },
+	                        jugador.nombre,
+	                        ' '
+	                      )
+	                    ),
+	                    _react2.default.createElement(
+	                      'div',
+	                      { className: 'col-xs-1 col-lg-1' },
+	                      _react2.default.createElement('i', { className: 'fa fa-user fa-lg', style: { color: jugador.color }, 'aria-hidden': 'true' })
+	                    )
+	                  );
+	                })
+	              ),
+	              accion
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ItemPartida;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	  return {};
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(ItemPartida);
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SelectColor = function (_Component) {
+	  _inherits(SelectColor, _Component);
+
+	  function SelectColor(props) {
+	    _classCallCheck(this, SelectColor);
+
+	    var _this = _possibleConstructorReturn(this, (SelectColor.__proto__ || Object.getPrototypeOf(SelectColor)).call(this, props));
+
+	    _this.changeColor = _this.changeColor.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(SelectColor, [{
+	    key: 'changeColor',
+	    value: function changeColor() {
+	      var select = document.getElementById('selectColor' + this.props.indice);
+	      var boton = document.getElementById('botonColor' + this.props.indice);
+	      boton.style.backgroundColor = select.value === 'Orange' ? 'sandybrown' : select.value;
+	      boton.style.color = boton.style.backgroundColor;
+	      boton.style.borderColor = select.value === 'White' ? '#ccc' : select.value;
+	      this.props.setColor(select.value);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'input-group' },
+	        _react2.default.createElement(
+	          'select',
+	          { id: "selectColor" + this.props.indice, className: 'form-control', onChange: this.changeColor },
+	          this.props.colores.map(function (color) {
+	            return _react2.default.createElement(
+	              'option',
+	              { key: color },
+	              color
+	            );
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'input-group-btn' },
+	          _react2.default.createElement(
+	            'div',
+	            { id: "botonColor" + this.props.indice, className: 'btn', style: { backgroundColor: this.props.colores[0], color: this.props.colores[0] } },
+	            'GO'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SelectColor;
+	}(_react.Component);
+
+	exports.default = SelectColor;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var COLORES = exports.COLORES = ['Blue', 'Red', 'White', 'Yellow'];
+	var LISTA_PARTIDAS = exports.LISTA_PARTIDAS = {
+	  SIN_EMPEZAR: 'SE',
+	  PROPIAS: 'PR'
+	};
+
+	var CONST_HEX = exports.CONST_HEX = {
+	  RATIO: 1.732050808,
+	  RADIO: 30,
+	  X_INI: 50,
+	  Y_INI: 30
+	};
+
+	var GREEN_HEX = exports.GREEN_HEX = {
+	  ancho: 186.28062,
+	  alto: 215.09834
+	};
+
+	var distanciasGreen = exports.distanciasGreen = {
+	  ejeBig: ["1x1", "1x2", "1x3", "1x4", "2x1", "2x2", "2x3", "2x4", "3x1", "3x2", "3x3", "3x4", "4x1", "4x2", "4x3", "4x4"],
+	  distanciasBig: [[0, 8, 16, 24, 8, 12, 20, 28, 12, 16, 20, 24, 20, 24, 28, 32], [8, 0, 8, 16, 24, 8, 12, 20, 16, 12, 16, 20, 20, 20, 24, 28], [16, 8, 0, 8, 12, 8, 8, 12, 20, 16, 12, 16, 24, 20, 20, 24], [24, 16, 8, 0, 20, 12, 8, 8, 24, 20, 16, 12, 28, 24, 20, 20], [8, 24, 12, 20, 0, 8, 16, 24, 8, 8, 12, 20, 12, 16, 20, 24], [12, 8, 8, 12, 8, 0, 8, 16, 12, 8, 8, 12, 16, 12, 16, 20], [20, 12, 8, 8, 16, 8, 0, 8, 20, 12, 8, 8, 20, 16, 12, 16], [28, 20, 12, 8, 24, 16, 8, 0, 28, 20, 12, 8, 24, 20, 16, 12], [12, 16, 20, 24, 8, 12, 20, 28, 0, 8, 16, 24, 8, 12, 20, 28], [16, 12, 16, 20, 8, 8, 12, 20, 8, 0, 8, 16, 8, 8, 12, 20], [20, 16, 12, 16, 12, 8, 8, 12, 16, 8, 0, 8, 12, 8, 8, 20], [24, 20, 16, 12, 20, 12, 8, 8, 24, 16, 8, 0, 20, 12, 8, 8], [20, 20, 24, 28, 12, 16, 20, 24, 8, 8, 12, 20, 0, 8, 16, 24], [24, 20, 20, 24, 16, 12, 16, 20, 12, 8, 8, 12, 8, 0, 8, 16], [28, 24, 20, 20, 20, 16, 12, 16, 20, 12, 8, 8, 16, 8, 0, 8], [32, 28, 24, 20, 24, 20, 16, 12, 28, 20, 20, 8, 24, 16, 8, 0]],
+	  ejeSmall: ["1x1", "1x2", "1x3", "2x1", "2x2", "2x3", "3x1", "3x2", "3x3", "4x1", "4x2", "4x3", "5x1", "5x2", "5x3", "6x1", "6x2", "6x3"],
+	  distanciaSmall: [[0, 1, 2, 1, 2, 3, 2, 3, 4, 2, 3, 4, 2, 3, 4, 1, 2, 3], [1, 0, 1, 2, 2, 3, 3, 4, 5, 3, 4, 5, 3, 4, 5, 2, 2, 3], [2, 1, 0, 3, 3, 3, 4, 5, 6, 4, 5, 6, 4, 5, 6, 3, 3, 3]]
+	};
+
+	var COLOR_ROUGH = exports.COLOR_ROUGH = "#008000";
+	var COLOR_FOREST = exports.COLOR_FOREST = "#552200";
+	var COLOR_FAIRWAY = exports.COLOR_FAIRWAY = "#00ff00";
+	var COLOR_SAND = exports.COLOR_SAND = "#ffff00";
+	var COLOR_GREEN = exports.COLOR_GREEN = "#ffff00";
+	var COLOR_WATER = exports.COLOR_WATER = "#000080";
+	var COLOR_TEE = exports.COLOR_TEE = "#ff0000";
+	var COLOR_STROKE = exports.COLOR_STROKE = "#ffffff";
+	var COLOR_STROKE_GREEN = exports.COLOR_STROKE_GREEN = "#00ff00";
+	var STROKE = exports.STROKE = 3;
+
+	var ESTILOS_HEX = exports.ESTILOS_HEX = [{ fill: COLOR_ROUGH, fillOpacity: "1", stroke: COLOR_STROKE, strokeWidth: STROKE }, { fill: COLOR_FOREST, fillOpacity: "1", stroke: COLOR_STROKE, strokeWidth: STROKE }, { fill: COLOR_FAIRWAY, fillOpacity: "1", stroke: COLOR_STROKE, strokeWidth: STROKE }, { fill: COLOR_SAND, fillOpacity: "0.33", stroke: COLOR_STROKE, strokeWidth: STROKE }, { fill: COLOR_GREEN, fillOpacity: "1", stroke: COLOR_STROKE_GREEN, strokeWidth: STROKE }, { fill: COLOR_WATER, fillOpacity: "1", stroke: COLOR_STROKE, strokeWidth: STROKE }, { fill: COLOR_TEE, fillOpacity: "1", stroke: COLOR_STROKE, strokeWidth: STROKE }, { fill: COLOR_GREEN, fillOpacity: "1", stroke: COLOR_TEE, strokeWidth: STROKE * 2 }];
+
+	var INDICE_ESTILOS = exports.INDICE_ESTILOS = "rfysgwtl";
+
+	var PREFIJO_CARTAS = exports.PREFIJO_CARTAS = {
+	  CARTAS_BACK_ACCION: "/img/CartasBack/CBA_",
+	  CARTAS_BACK_PALO: "/img/CartasBack/CBP_"
+	};
+
+	var CARTAS_PALOS = exports.CARTAS_PALOS = {
+	  DIR: "/img/CartasPalo/",
+	  FILES: ["Club_W1.png", "Club_W3.png", "Club_I3.png", "Club_I5.png", "Club_I7.png", "Club_I9.png", "Club_PW.png", "Club_SW.png"]
+	};
+
+	var ESTADOS_JUEGO = exports.ESTADOS_JUEGO = {
+	  INICIO: "INICIO",
+	  GOLPE_INICIADO: 'GOLPE_INICIADO',
+	  ACCIONES: "ACCIONES"
+	};
+
+	var ESTADO_JUGADOR = exports.ESTADO_JUGADOR = {
+	  ESPERANDO: 'WAITING',
+	  GOLPE: 'STROKE',
+	  ACCION: 'ACTION',
+	  ACCION_PREVIA: 'PREVIOUS ACTION',
+	  TURNO: 'TURN', //ESPERANDO TURNO
+	  GREEN: 'GREEN',
+	  ENTRANDO_GREEN: 'TO GREEN',
+	  FIN_HOYO: 'HOLE IN',
+	  FIN_ACCIONES: 'FIN_ACCIONES'
+	};
+
+	var ESTADO_PARTIDA = exports.ESTADO_PARTIDA = {
+	  ESPERANDO: 'E',
+	  GOLPE: 'G',
+	  ACCION: 'A',
+	  TURNO: 'T', //ESPERANDO TURNO
+	  ACCION_PREVIA: 'R',
+	  GREEN: 'N',
+	  ENTRANDO_GREEN: 'Y',
+	  FIN_HOYO: 'F',
+	  FIN_ACCIONES: 'C'
+	};
+
+	var LOCAL_STORAGE = exports.LOCAL_STORAGE = {
+	  TOKEN: 'Token-Zorogolf',
+	  USUARIO: 'User-Zorogolf'
+	};
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(173);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ListaJugadores = function (_Component) {
+	  _inherits(ListaJugadores, _Component);
+
+	  function ListaJugadores(props) {
+	    _classCallCheck(this, ListaJugadores);
+
+	    return _possibleConstructorReturn(this, (ListaJugadores.__proto__ || Object.getPrototypeOf(ListaJugadores)).call(this, props));
+	  }
+
+	  _createClass(ListaJugadores, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _this2 = this;
+
+	      for (var i = this.props.jugadores.length; i < nextProps.jugadores.length; i++) {
+	        this.props.funcionJ(nextProps.jugadores[i]);
+	      }
+	      if (nextProps.jugadores.length === 4) {
+	        Meteor.call('addCampo', this.props.id, this.props.campo, function (error, result) {
+	          console.log(result);
+	          if (result) {
+	            _this2.props.funcionC(result);
+	            _reactRouter.browserHistory.push('/Partida/' + _this2.props.id);
+	          }
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'row-fluid col-xs-8 col-md-7 col-sd-7 col-lg-6 col-lg-offset-2 margen-top20' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'panel panel-default wheat' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'panel-heading' },
+	            this.props.nombre
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'panel-body' },
+	            this.props.jugadores.map(function (jugador) {
+	              return _react2.default.createElement(
+	                'div',
+	                { key: jugador.nombre },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'col-xs-10 col-lg-5 col-lg-offset-3' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    { 'for': 'color', className: 'control-label' },
+	                    jugador.nombre,
+	                    ' '
+	                  )
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'col-xs-1 col-lg-1' },
+	                  _react2.default.createElement('i', { className: 'fa fa-user fa-lg', style: { color: jugador.color }, 'aria-hidden': 'true' })
+	                )
+	              );
+	            })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ListaJugadores;
+	}(_react.Component);
+
+	exports.default = ListaJugadores;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactRedux = __webpack_require__(229);
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _color = __webpack_require__(285);
+
+	var _color2 = _interopRequireDefault(_color);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	var _constantes = __webpack_require__(286);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CrearPartida = function (_Component) {
+	  _inherits(CrearPartida, _Component);
+
+	  function CrearPartida(props) {
+	    _classCallCheck(this, CrearPartida);
+
+	    var _this = _possibleConstructorReturn(this, (CrearPartida.__proto__ || Object.getPrototypeOf(CrearPartida)).call(this, props));
+
+	    _this.state = {
+	      id: 0,
+	      color: "Black"
+	    };
+
+	    _this.setColor = _this.setColor.bind(_this);
+	    _this.crearPartida = _this.crearPartida.bind(_this);
+
+	    return _this;
+	  }
+
+	  _createClass(CrearPartida, [{
+	    key: 'setColor',
+	    value: function setColor(color) {
+	      this.setState({ color: color });
+	    }
+	  }, {
+	    key: 'crearPartida',
+	    value: function crearPartida(e) {
+	      e.preventDefault();
+	      var partida = {};
+	      var jugador = {};
+	      var jugadores = [];
+	      partida.nombre = document.getElementById('nombre').value;
+	      partida.jugadores = jugadores;
+	      partida.campo = 'Zorocampo';
+	      /* Meteor.call('nuevaPartida', partida, (error, result) => {
+	        this.setState({id: result})
+	        partida.id = result
+	        jugador.nombre = Meteor.user().username
+	        jugador.color = this.state.color
+	        Meteor.call('addJugador', jugador, partida.id, (err, jug) => {
+	          this.props.dispatch(nuevaPartida(partida))
+	          this.props.dispatch(nuevoJugador(jug))
+	        })
+	      })*/
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'section',
+	        { className: 'bg-primary' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'container' },
+	          _react2.default.createElement(
+	            'form',
+	            { name: 'juegoForm', className: 'form-horizontal col-xs-12 col-lg-8', role: 'form', onSubmit: this.crearPartida },
+	            _react2.default.createElement(
+	              'h1',
+	              { className: 'text-center' },
+	              'New Game Data'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row-fluid form-group' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'col-xs-4 col-lg-4 text-right' },
+	                _react2.default.createElement(
+	                  'label',
+	                  { className: 'control-label' },
+	                  'Game Name'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'col-xs-8 col-lg-8' },
+	                _react2.default.createElement('input', { id: 'nombre',
+	                  className: 'form-control',
+	                  type: 'text',
+	                  name: 'nombre',
+	                  placeholder: 'Name',
+	                  required: true })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row-fluid form-group' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'col-xs-4 col-lg-4 text-right' },
+	                _react2.default.createElement(
+	                  'label',
+	                  { className: 'control-label' },
+	                  'Choose Color'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'col-xs-4 col-lg-4' },
+	                _react2.default.createElement(_color2.default, { setColor: this.setColor, colores: _constantes.COLORES })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'row-fluid form-group' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'col-xs-4 col-xs-offset-4 col-lg-4 col-lg-offset-4' },
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn btn-success', type: 'submit' },
+	                  'New Game'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return CrearPartida;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+	  return {
+	    partidas: state.partida
+	  };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(CrearPartida);
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.inicio = inicio;
+	exports.login = login;
+	exports.saveUserCredentials = saveUserCredentials;
+
+	var _constantes = __webpack_require__(286);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	var _store = __webpack_require__(273);
+
+	var _store2 = _interopRequireDefault(_store);
+
+	var _socket = __webpack_require__(290);
+
+	var Socket = _interopRequireWildcard(_socket);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var socket = void 0;
+
+	function loadUserCredentials() {
+	    var token = window.localStorage.getItem(_constantes.LOCAL_STORAGE.TOKEN);
+	    if (token) {
+	        var name = window.localStorage.getItem(_constantes.LOCAL_STORAGE.USUARIO);
+	        _store2.default.dispatch((0, _accionesPartidas.userLogin)({ token: token, name: name }));
+	    }
+	}
+
+	function inicio() {
+	    if (!_store2.default.getState().usuario.conectado) {
+	        socket = Socket.conectar(socket);
+	    }
+	    loadUserCredentials();
+	}
+
+	function login(usuario) {
+	    Socket.emitirMensaje(socket, "login", usuario);
+	}
+
+	function saveUserCredentials(datos) {
+	    var token = datos.token;
+	    window.localStorage.setItem(_constantes.LOCAL_STORAGE.TOKEN, token);
+	    if (token) {
+	        var name = datos.name;
+	        window.localStorage.setItem(_constantes.LOCAL_STORAGE.USUARIO, name);
+	        _store2.default.dispatch((0, _accionesPartidas.userLogin)({ token: token, name: name }));
+	    }
+	}
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.conectar = conectar;
+	exports.emitirMensaje = emitirMensaje;
+
+	var _store = __webpack_require__(273);
+
+	var _store2 = _interopRequireDefault(_store);
+
+	var _accionesPartidas = __webpack_require__(272);
+
+	var _sesion = __webpack_require__(289);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function conectar(socket) {
+	    socket = io.connect('http://localhost:8080', { 'forceNew': true });
+	    //socket = io.connect('https://127.0.0.1:3100', { 'forceNew': true });
+
+	    socket.on('connect', function () {
+	        emitirMensaje(socket, 'conectado', 'OK');
+	        _store2.default.dispatch((0, _accionesPartidas.userConectar)({}));
+	    });
+
+	    socket.on('login', function (data) {
+	        console.log(data);
+	        if (data.success) {
+	            (0, _sesion.saveUserCredentials)(data);
+	        }
+	    });
+
+	    socket.on('data', function (data) {
+	        console.log(data);
+	    });
+
+	    return socket;
+	}
+
+	function emitirMensaje(socket, tipo, datos) {
+	    socket.emit(tipo, datos);
+	    return true;
+	}
 
 /***/ }
 /******/ ]);

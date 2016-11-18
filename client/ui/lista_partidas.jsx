@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Partidas from '../api/colecciones'
+//import Partidas from '../api/colecciones'
 import ItemPartida from './item_partida.jsx'
 import {LISTA_PARTIDAS} from '../api/constantes'
 
@@ -9,21 +9,14 @@ export default class ListaPartidas extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      subscription: {
-        partidas: Meteor.subscribe('partidas')
-      }
     }
-  }
-
-  componentWillUnmount() {
-    this.state.subscription.partidas.stop();
   }
 
   partidas() {
     let filtroSE = (this.props.usuario.logado ?  {jugadores: { $not: {$elemMatch: {nombre:this.props.usuario.username}}}, "jugadores.3": {$exists: false} } : {"jugadores.3": {$exists: false}} )
     let filtroPR = (this.props.usuario.logado ?  {"jugadores.nombre":this.props.usuario.username} : {} )
     let filtro = (this.props.lista === LISTA_PARTIDAS.SIN_EMPEZAR ? filtroSE : filtroPR )
-    return Partidas.find(filtro).fetch();
+    //return Partidas.find(filtro).fetch();
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Hexagono from '../ui/hexagono.jsx';
 import {ESTILOS_HEX, INDICE_ESTILOS, CONST_HEX, GREEN_HEX} from './constantes'
-import {coordenadasBandera} from './actions/acciones-partidas'
+import {coordenadasBandera} from './redux/acciones-partidas'
 
 
 export var datosCampo = {

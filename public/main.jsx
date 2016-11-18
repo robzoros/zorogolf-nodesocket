@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { renderRutasApp } from '../src/api/routes.jsx'
+import { renderRutasApp } from '../client/api/routes.jsx'
 
 
 window.onload = () => {

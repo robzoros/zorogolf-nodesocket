@@ -1,15 +1,33 @@
+//noinspection JSUnresolvedVariable
 import { combineReducers } from 'redux'
-import { ACCIONES_REDUX } from '../actions/acciones-partidas'
+import { ACCIONES_REDUX } from './acciones-partidas'
 
 const initialState = { empezar: true }
-const usuarioNoLogado = { logado: false }
+const inicioUsuario = {
+  conectado: false,
+  logado: false,
+  crearCuenta: false
+}
 
-let usuario = (state = usuarioNoLogado, action) => {
+let usuario = (state = inicioUsuario, action) => {
   switch (action.type) {
+    case ACCIONES_REDUX.CONECTAR:
+      return {
+        ...state,
+        conectado: true
+      }
     case ACCIONES_REDUX.LOGIN:
-      return action.usuario
+      return {
+        ...state,
+        logado: true,
+        name: action.usuario.name,
+        token: action.usuario.token
+      }
     case ACCIONES_REDUX.LOGOUT:
-      return usuarioNoLogado
+      return {
+        ...state,
+        logado: false
+      }
     default:
       return state
   }

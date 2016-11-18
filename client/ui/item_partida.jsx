@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import { browserHistory } from 'react-router'
 
 import SelectColor from './color.jsx'
-import {nuevaPartida,nuevoJugador} from '../api/actions/acciones-partidas'
+import {nuevaPartida,nuevoJugador} from '../api/redux/acciones-partidas'
 import {COLORES, LISTA_PARTIDAS} from '../api/constantes'
 
 class ItemPartida extends Component{

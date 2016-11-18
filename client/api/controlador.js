@@ -1,6 +1,6 @@
 import { getDados } from './utiles'
-import Store from './store/store'
-import { setEstadoHoyo, actualizarJugadores } from './actions/acciones-partidas';
+import Store from './redux/store'
+import { setEstadoHoyo, actualizarJugadores } from './redux/acciones-partidas';
 import {ESTADO_JUGADOR, ESTADO_PARTIDA, CONST_HEX} from './constantes'
 import * as Utiles from './utiles'
 
