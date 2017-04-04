@@ -112,12 +112,22 @@ let eventos = (state = {}, action) => {
   }
 }
 
+let partidas =  (state = {}, action) => {
+  switch (action.type) {
+    case ACCIONES_REDUX.OBTENER_PARTIDAS:
+      return action.partidas
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   usuario,
   datos,
   hoyos,
   hoyo_actual,
-  eventos
+  eventos,
+  partidas
 })
 
 export default rootReducer

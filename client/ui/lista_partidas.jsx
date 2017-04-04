@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-//import Partidas from '../api/colecciones'
 import ItemPartida from './item_partida.jsx'
 import {LISTA_PARTIDAS} from '../api/constantes'
 
@@ -8,8 +7,7 @@ import {LISTA_PARTIDAS} from '../api/constantes'
 export default class ListaPartidas extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {}
   }
 
   partidas() {
@@ -26,7 +24,7 @@ export default class ListaPartidas extends Component {
           <div className="panel panel-default">
             <div className="panel-heading">{titulo}</div>
               <div className="panel-body">
-              {this.partidas().map((partida, indice) => {
+              {this.props.partidas.map((partida, indice) => {
                   return <ItemPartida key={partida._id} partida={partida} indice={indice} lista={this.props.lista} />
                 })}
             </div>

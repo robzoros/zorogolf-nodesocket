@@ -11,7 +11,8 @@ export const ACCIONES_REDUX = {
   COORDENADAS_BANDERA: 'COORDENADAS_BANDERA',
   SIZE_HOYO: 'SIZE_HOYO',
   ESTADO_HOYO: 'ESTADO_HOYO',
-  GOLPE_INICIADO: 'GOLPE_INICIADO'
+  GOLPE_INICIADO: 'GOLPE_INICIADO',
+  OBTENER_PARTIDAS: 'OBTENER_PARTIDAS'
 }
 
 export function userConectar(usuario) {
@@ -88,5 +89,12 @@ export function actualizarJugadores(jugadores) {
   return{
     type: ACCIONES_REDUX.ACTUALIZAR_JUGADORES,
     jugadores
+  }
+}
+
+export function obtenerPartidas(partidas) {
+  return{
+    type: ACCIONES_REDUX.OBTENER_PARTIDAS,
+    partidas
   }
 }

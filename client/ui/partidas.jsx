@@ -49,7 +49,7 @@ class PartidasUI extends Component {
         }
 
         return (
-            <div className="container enlinea">
+            <div className="contenido">
               {mostrar}
               {lista}
             </div>

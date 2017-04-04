@@ -1,9 +1,9 @@
-var Partida = require('../models/partida.js');
+var Partidas = require('../models/partidas.js');
 var Juego   = require('../models/juego.js');
 var User    = require('../models/user.js');
 var jwt     = require('jwt-simple');
 var config  = require('../config/database'); // get db config file
-var global
+var global;
 
 // Promesa para verificar usuario
 function verificarUsuario (req, res) {
@@ -12,7 +12,7 @@ function verificarUsuario (req, res) {
             if (err) {
                 console.log(err);
                 return res.status(500).send(err.message);
-            };
+            }
 
             if (!user) {
                 console.log('Authentication failed. User not found.');
@@ -20,43 +20,64 @@ function verificarUsuario (req, res) {
             } 
             else {
                 resolve(req, res);
-            };
+            }
         });
     });
-};
+}
 
-// Promesa para verificar token y usuario administrador
-function verificarToken (req, res, needAdmin) {
+// *** Zorogolf ***
+// Promesa para verificar token
+exports.verificarToken = function(token) {
     return new Promise ( function(resolve, reject) {
-        var token = global.getToken(req.headers);
         if (token) {
-            var decoded = jwt.decode(token, config.secret);
+            var decoded = jwt.decode(token.split(' ')[1], config.secret);
             User.findOne({name: decoded.name}, function(err, user) {
-                console.log(user);
                 if (err) {
                     console.log(err);
-                    return res.status(500).send( err.message);
-                };
+                    reject( err.message);
+                }
 
                 if (!user) {
                     console.log('Authentication failed. User not found.');
-                    return res.status(403).send('Authentication failed. User not found.');
+                    reject('Authentication failed. User not found.');
                 } 
 
-                if (needAdmin && (user.rol !== "Administrador")) {
-                    console.log('El usuario %s no tiene privilegios sobre la tabla juegos.', user.name);
-                    return res.status(403).send('El usuario ' + user.name + ' no tiene privilegios sobre la tabla juegos.');
-                }
-                resolve(req, res);
+                resolve ({success: true, token: token, name: decoded.name});
             });
         }
         else {
             console.log('Authentication failed. Token not found.');
-            return res.status(403).send('Authentication failed. Token not found.');
-        };
+            reject('Authentication failed. Token not found.');
+        }
     });
 
 };
+
+// *** Zorogolf ***
+// Obtener partidas no acabadas
+exports.getListaPartidas = function(data) {
+    return new Promise ( function(resolve, reject) {
+        var token = data.split(' ');
+        if (token) {
+            //var decoded = jwt.decode(token, config.secret);
+        
+            Partidas.find({'jugadores.3': {$exists: false}}, function(err, partidas) {
+                if(err){
+                    console.log(err);
+                    reject(err.message);
+                }
+                resolve({success: true, partidas});
+            });
+        }
+        else {
+            console.log('Authentication failed. Token not found.');
+            reject('Authentication failed. Token not found.');
+        }
+    })
+};
+
+
+
 
 // Funciones que llamarán en las promesas
 actualizaPartida = function (req, res) {
@@ -64,7 +85,7 @@ actualizaPartida = function (req, res) {
         if (err) {
             console.log(err);
             return res.status(500).send(err.message);
-        };
+        }
         if (partida.usuario === req.body.usuario) {
             partida.nombre = req.body.nombre;
             partida.juego = req.body.juego;
@@ -78,7 +99,7 @@ actualizaPartida = function (req, res) {
                 if (err) {
                     console.log(err);
                     return res.status(500).send(err.message);
-                };
+                }
                 res.status(200).jsonp(partida);
             });
         }
@@ -123,7 +144,7 @@ nuevoJuego = function(req, res) {
         if (err) {
             console.log(err);
             return res.status(500).send( err.message);
-        };
+        }
         res.status(200).jsonp(juego);
     }); 
 };
@@ -193,25 +214,6 @@ exports.getPartida = function(req, res) {
     //});
 };
 
-exports.getListaPartidas = function(req, res) {  
-    //console.log('GET /lista');
-    var token = global.getToken(req.headers);
-    if (token) {
-        var decoded = jwt.decode(token, config.secret);
-    
-        Partida.find({usuario: decoded.name}, function(err, partidas) {
-            if(err){
-                console.log(err);
-                return res.status(500).send(err.message);
-            }
-            res.status(200).jsonp(partidas);
-        });
-    }
-    else {
-        console.log('Authentication failed. Token not found.');
-        return res.status(403).send('Authentication failed. Token not found.');
-    };
-};
 
 exports.putPartida = function(req, res) {  
     verificarUsuario(req, res).then( function(){
@@ -316,14 +318,13 @@ exports.crearUsuario = function(req, res) {
     }    
 };
 
+// *** Zorogolf ***
+// Comprobar usuario y Password
 exports.login = function(datos) {
     return new Promise ( function(resolve, reject) {
-        console.log('FIND User %O', datos );
         User.findOne({
             name: datos.name
         }, function (err, user) {
-            console.log('FIND User %O', user );
-
             if (err)
                 reject(err);
 
@@ -342,7 +343,6 @@ exports.login = function(datos) {
                         resolve ({success: true, token: 'JWT ' + token, name: user.name, rol: user.rol});
                     } else {
                         console.log('Not Compare Pass');
-
                         reject('Authentication failed. Wrong password.');
                     }
                 });

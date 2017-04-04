@@ -1,57 +1,53 @@
-var  jwt         = require('jwt-simple'),
-     User        = require('../models/user'), // get the mongoose model
-     config      = require('../config/database'); // get db config file
-     zorogolf_db = require('./zorogolf_db');
+var zorogolf_db = require('./zorogolf_db');
+var timeOut = 25000;
 
-var messages = [{
-    id: 1,
-    text: "Hola soy un mensaje",
-    author: "Carlos Azaustre"
-}];
 
-var verificaToken = function(token){
-    return new Promise ( function(resolve, reject) {
-        if (token) {
-            //var decoded = jwt.decode(token, config.secret);
-            //User.findOne({name: decoded.name}, function(err, user) {
-            User.findOne({name: 'zoro'}, function(err, user) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                if (!user) {
-                    console.log('Authentication failed. User not found.');
-                    reject('Authentication failed. User not found.');
-                }
-                resolve({success: true});
-            });
-        }
-        else {
-            console.log('Authentication failed. Token not found.');
-            reject('Authentication failed. Token not found.');
-        };
-    });
-};
-
+var tratarPeticion = function (socket, tipo, peticion ) {
+    socket.on(tipo, function(msg) {
+        console.log(tipo + ": " + socket.id)
+        peticion(msg)
+            .then((data) => {
+                socket.emit(tipo, data)
+            })
+            .catch((data)=> {
+                console.log(tipo + " error: ", data)
+                socket.emit(tipo, data)
+            })
+    })
+}
 
 module.exports = function(io){
+    console.log("Esperando Conexiones via Socket.io");
     io.on('connection', function(socket) {
         socket.on('conectado', function(data) {
-            console.log(new Date() + ': Alguien se ha conectado con Sockets.');
+            console.log(new Date() + ': Socket conectado:   ', socket.id);
         })
 
-        socket.on('login', function(data) {
-            console.log('Login %O', data)
-            zorogolf_db.login(data)
-                .then((data) => {
-                    console.log('Then %O', data)
-                    io.sockets.emit('login', data);
-                })
-                .catch((data)=> {
-                    console.log('Catch %O', data)
-                    io.sockets.emit('login', data);
-                })
+        // Desconexión
+        socket.on('disconnect', function() {
+            console.log(new Date() +  ': Socket desconectado:', socket.id);
         });
-    });
-};
+        
+        // Tratar peticiones
+        tratarPeticion(socket, 'login',  zorogolf_db.login)
+        tratarPeticion(socket, 'token',  zorogolf_db.verificarToken)
+        tratarPeticion(socket, 'begin',  zorogolf_db.getListaPartidas)
+        
+
+        // Gestionando Pong
+        function sendHeartbeat(){
+            console.log(new Date() +  ": Heartbit");
+            setTimeout(sendHeartbeat, timeOut);
+            socket.emit('ping', { beat : 1 });
+        }
+
+        socket.on('pong', function(data){
+            console.log(new Date() +  "Pong received from client: ", socket.id);
+        });
+
+        setTimeout(sendHeartbeat, timeOut);
+
+
+    })
+}
 

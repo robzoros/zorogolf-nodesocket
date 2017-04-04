@@ -1,3 +1,4 @@
+import style from  '../stylesheets/main.scss';
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { renderRutasApp } from '../client/api/routes.jsx'

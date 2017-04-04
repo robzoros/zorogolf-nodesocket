@@ -1,5 +1,4 @@
 import {LOCAL_STORAGE} from './constantes'
-import { userLogin } from './redux/acciones-partidas'
 import Store from './redux/store'
 import * as Socket from './socket'
 
@@ -7,9 +6,10 @@ let socket
 
 function loadUserCredentials() {
     let token = window.localStorage.getItem(LOCAL_STORAGE.TOKEN)
+    console.log("Token: ", token)
     if (token) {
         let name = window.localStorage.getItem(LOCAL_STORAGE.USUARIO)
-        Store.dispatch(userLogin({token, name}))
+        Socket.emitirMensaje("token", token)
     }
 }
 
@@ -21,7 +21,7 @@ export function inicio() {
 }
 
 export function login(usuario) {
-    Socket.emitirMensaje(socket, "login", usuario)
+    Socket.emitirMensaje("login", usuario)
 }
 
 export function saveUserCredentials(datos) {
@@ -30,6 +30,5 @@ export function saveUserCredentials(datos) {
     if (token) {
         let name = datos.name
         window.localStorage.setItem(LOCAL_STORAGE.USUARIO, name)
-        Store.dispatch(userLogin({token, name}))
     }
 }

@@ -61,41 +61,38 @@ export default class Principal extends Component {
 
 }
 
-class BarraNav extends Component {
+class BarraNav extends Component{ 
   constructor(props) {
     super(props)
   }
 
   render() {
     return (
-      <nav className="navbar navbar-default navbar-fixed-top">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-            </button>
-            <a onClick={this.props.newGame}><img alt="Zorogolf" className="imagenLogo" src="../img/LogoletraClaro.png"/></a>
-          </div>
-
-          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul className="nav navbar-nav">
-              <li className="dropdown">
-                  <a className="dropdown-toggle"
-                     data-toggle="dropdown"
-                     role="button"
-                     aria-haspopup="true"
-                     aria-expanded="false" >Game <span className="caret"></span></a>
-                  <ul className="dropdown-menu">
-                      <li><a onClick={this.props.newGame}>New Game</a></li>
-                  </ul>
-              </li>
-            </ul>
+      <nav className="navbar navbar-toggleable-sm navbar-inverse fixed-top bg-inverse bg-faded">
+        <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#menuprincipal" 
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+        </button>
+        <a className="navbar-brand" onClick={this.props.newGame}><img alt="Zorogolf" className="imagenLogo" src="../img/LogoletraClaro.png"/></a>
+        <div className="collapse navbar-collapse" id="menuprincipal">
+          <ul className="navbar-nav ml-auto mt-2 mt-md-0">
+            <li className="nav-item active"><a href="#" className="nav-link">Home</a></li>
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="http://example.com" id="gameDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Game <span className="caret"></span>
+                </a>
+                <div className="dropdown-menu" aria-labelledby="gameDropdownMenuLink">
+                  <a className="dropdown-item" onClick={this.props.newGame}>New Game</a>
+                  <a className="dropdown-item" href="#">Another action</a>
+                  <a className="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li className="nav-item">
+              <a href="http://askubuntu.com/questions/88384/how-can-i-repair-grub-how-to-get-ubuntu-back-after-installing-windows" className="nav-link">Ask ubuntu</a>
+            </li>
 
             <CuentasWrapper cambiarPassword={this.props.cambiarPassword} login={this.props.login} crearCuenta={this.props.crearCuenta} />
-          </div>
+          </ul>
         </div>
       </nav>
     )
