@@ -39,7 +39,7 @@ p {
   line-height: 1.5; }
 
 .bg-primary {
-  background-color: #f05f40; }
+  background-color: #f05f40 !important; }
 
 .bg-dark {
   color: #fff;
@@ -51,15 +51,8 @@ p {
 .text-faded {
   color: rgba(255, 255, 255, 0.7); }
 
-section {
-  padding: 100px 0; }
-
-aside {
-  padding: 50px 0; }
-
 .contenido {
-  margin-top: 2.5rem;
-  margin-left: 1rem; }
+  margin-top: 2.5rem; }
 
 .enlinea {
   display: inline; }
@@ -338,6 +331,9 @@ input[type="checkbox"]:checked + span:before {
   /* glyphicon checked */
   color: #2196F3; }
 
+input[type="text"], select {
+  font-family: "Concert One"; }
+
 .checkbox label, .radio label {
   padding-left: 0px; }
 
@@ -365,3 +361,29 @@ input[type="checkbox"]:checked + span:before {
 
 #login-dropdown-list a {
   cursor: pointer; }
+
+.panel-partida {
+  margin-top: 4rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem; }
+
+.panel-partida-label {
+  color: #fff; }
+
+.panel-lista-partidas {
+  margin-top: 1rem; }
+
+.panel-lista-partidas-interior {
+  border: solid #f05f40;
+  padding: 1rem;
+  border-radius: 0.5rem; }
+
+.item-clickable {
+  color: #f05f40; }
+
+.card-header {
+  color: #fff;
+  background: #f05f40; }
+
+.margen-izquierdo {
+  margin-left: 2rem; }

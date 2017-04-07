@@ -1,5 +1,6 @@
 export const ACCIONES_REDUX = {
   CONECTAR: 'CONECTAR',
+  TOKEN: 'TOKEN',
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
   SIGNUP: 'SIGNUP',
@@ -22,6 +23,12 @@ export function userConectar(usuario) {
   }
 }
 
+export function userLoadToken(usuario) {
+  return{
+    type: ACCIONES_REDUX.TOKEN,
+    usuario
+  }
+}
 export function userLogin(usuario) {
   return{
     type: ACCIONES_REDUX.LOGIN,

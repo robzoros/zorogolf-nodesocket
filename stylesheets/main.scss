@@ -1,37 +1,37 @@
 $colorPrincipal: #f05f40;
 $assetPath : "/img";
 $bg-url: url(#{$assetPath}/ZorogolfPortadaWeb.png);
-
+$colorSecundario: #fff;
 
 
 html,
 body {
-  width: 100%;
-  height: 100%;
-  font-family: 'El Messiri', sans-serif;
-  font-size: 20px;
+	width: 100%;
+	height: 100%;
+	font-family: 'El Messiri', sans-serif;
+	font-size: 20px;
 }
 
 hr {
-    max-width: 50px;
-    border-color: $colorPrincipal;
-    border-width: 3px;
+		max-width: 50px;
+		border-color: $colorPrincipal;
+		border-width: 3px;
 }
 
 hr.light {
-    border-color: #fff;
+		border-color: $colorSecundario;
 }
 
 a {
-    color: $colorPrincipal;
-    -webkit-transition: all .35s;
-    -moz-transition: all .35s;
-    transition: all .35s;
+		color: $colorPrincipal;
+		-webkit-transition: all .35s;
+		-moz-transition: all .35s;
+		transition: all .35s;
 }
 
 a:hover,
 a:focus {
-    color: #eb3812;
+		color: #eb3812;
 }
 
 h1,
@@ -40,139 +40,131 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Concert One";
-  font-style: normal;
-  font-weight: 400;
+	font-family: "Concert One";
+	font-style: normal;
+	font-weight: 400;
 }
 
 p {
-    margin-bottom: 20px;
-    font-size: 16px;
-    line-height: 1.5;
+		margin-bottom: 20px;
+		font-size: 16px;
+		line-height: 1.5;
 }
 
 .bg-primary {
-    background-color: $colorPrincipal;
+		background-color: $colorPrincipal !important;
 }
 
 .bg-dark {
-    color: #fff;
-    background-color: #222;
+		color: $colorSecundario;
+		background-color: #222;
 }
 
 .bg-inverse {
-    background-color: $colorPrincipal!important;
+		background-color: $colorPrincipal!important;
 }
 
 .text-faded {
-    color: rgba(255,255,255,.7);
-}
-
-section {
-    padding: 100px 0;
-}
-
-aside {
-    padding: 50px 0;
+		color: rgba(255,255,255,.7);
 }
 
 .contenido {
-    margin-top: 2.5rem;
-    margin-left: 1rem;
+		margin-top: 2.5rem;
+		//margin-left: 1rem;
 }
 
 .enlinea{
-    display: inline;
+		display: inline;
 }
 
 .no-padding {
-    padding: 0;
+		padding: 0;
 }
 
 header {
-    position: relative;
-    width: 100%;
-    min-height: auto;
-    text-align: center;
-    color: #fff;
-    background-image: $bg-url;
-    background-position: center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+		position: relative;
+		width: 100%;
+		min-height: auto;
+		text-align: center;
+		color: $colorSecundario;
+		background-image: $bg-url;
+		background-position: center;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		background-size: cover;
+		-o-background-size: cover;
 }
 
 header .header-content {
-    position: relative;
-    width: 100%;
-    padding: 100px 15px;
-    text-align: center;
+		position: relative;
+		width: 100%;
+		padding: 100px 15px;
+		text-align: center;
 }
 
 header .header-content .header-content-inner h1 {
-    margin-top: 0;
-    margin-bottom: 0;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: darkgreen;
+		margin-top: 0;
+		margin-bottom: 0;
+		text-transform: uppercase;
+		font-weight: 700;
+		color: darkgreen;
 }
 
 header .header-content .header-content-inner hr {
-    margin: 30px auto;
+		margin: 30px auto;
 }
 
 header .header-content .header-content-inner p {
-    margin-bottom: 50px;
-    font-size: 16px;
-    font-weight: 300;
-    color: ivory;
+		margin-bottom: 50px;
+		font-size: 16px;
+		font-weight: 300;
+		color: ivory;
 }
 
 @media(min-width:768px) {
-    header {
-        min-height: 100%;
-    }
+		header {
+				min-height: 100%;
+		}
 
-    header .header-content {
-        position: absolute;
-        top: 50%;
-        padding: 0 50px;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
+		header .header-content {
+				position: absolute;
+				top: 50%;
+				padding: 0 50px;
+				-webkit-transform: translateY(-50%);
+				-ms-transform: translateY(-50%);
+				transform: translateY(-50%);
+		}
 
-    header .header-content .header-content-inner {
-        margin-right: auto;
-        margin-left: auto;
-        max-width: 1000px;
-    }
+		header .header-content .header-content-inner {
+				margin-right: auto;
+				margin-left: auto;
+				max-width: 1000px;
+		}
 
-    header .header-content .header-content-inner p {
-        margin-right: auto;
-        margin-left: auto;
-        max-width: 80%;
-        font-size: 18px;
-    }
+		header .header-content .header-content-inner p {
+				margin-right: auto;
+				margin-left: auto;
+				max-width: 80%;
+				font-size: 18px;
+		}
 }
 
 .text-primary {
-    color: $colorPrincipal;
+		color: $colorPrincipal;
 }
 
 .no-gutter > [class*=col-] {
-    padding-right: 0;
-    padding-left: 0;
+		padding-right: 0;
+		padding-left: 0;
 }
 
 .btn-default {
-    border-color: #fff;
-    color: #222;
-    background-color: #fff;
-    -webkit-transition: all .35s;
-    -moz-transition: all .35s;
-    transition: all .35s;
+		border-color: $colorSecundario;
+		color: #222;
+		background-color: $colorSecundario;
+		-webkit-transition: all .35s;
+		-moz-transition: all .35s;
+		transition: all .35s;
 }
 
 .btn-default:hover,
@@ -181,15 +173,15 @@ header .header-content .header-content-inner p {
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-    border-color: #ededed;
-    color: #222;
-    background-color: #f2f2f2;
+		border-color: #ededed;
+		color: #222;
+		background-color: #f2f2f2;
 }
 
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-    background-image: none;
+		background-image: none;
 }
 
 .btn-default.disabled,
@@ -210,22 +202,22 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-    border-color: #fff;
-    background-color: #fff;
+		border-color: $colorSecundario;
+		background-color: $colorSecundario;
 }
 
 .btn-default .badge {
-    color: #fff;
-    background-color: #222;
+		color: $colorSecundario;
+		background-color: #222;
 }
 
 .btn-primary {
-    border-color: peachpuff;
-    color: #fff;
-    background-color: peachpuff;
-    -webkit-transition: all .35s;
-    -moz-transition: all .35s;
-    transition: all .35s;
+		border-color: peachpuff;
+		color: $colorSecundario;
+		background-color: peachpuff;
+		-webkit-transition: all .35s;
+		-moz-transition: all .35s;
+		transition: all .35s;
 }
 
 .btn-primary:hover,
@@ -234,15 +226,15 @@ fieldset[disabled] .btn-default.active {
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
-    border-color: chocolate;
-    color: #fff;
-    background-color: chocolate;
+		border-color: chocolate;
+		color: $colorSecundario;
+		background-color: chocolate;
 }
 
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
-    background-image: none;
+		background-image: none;
 }
 
 .btn-primary.disabled,
@@ -263,85 +255,85 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-    border-color: grey;
-    background-color: grey;
+		border-color: grey;
+		background-color: grey;
 }
 
 .btn-primary .badge {
-    color: peachpuff;
-    background-color: #fff;
+		color: peachpuff;
+		background-color: $colorSecundario;
 }
 
 .btna {
-    border: 0;
-    border-radius: 300px;
-    text-transform: uppercase;
-    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
-    font-weight: 700;
+		border: 0;
+		border-radius: 300px;
+		text-transform: uppercase;
+		font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+		font-weight: 700;
 }
 
 .btn-xl {
-    padding: 15px 30px;
+		padding: 15px 30px;
 }
 .btn-margen{
-  margin-left: 10px;
-  margin-top: 10px;
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
 ::-moz-selection {
-    text-shadow: none;
-    color: #fff;
-    background: #222;
+		text-shadow: none;
+		color: $colorSecundario;
+		background: #222;
 }
 
 ::selection {
-    text-shadow: none;
-    color: #fff;
-    background: #222;
+		text-shadow: none;
+		color: $colorSecundario;
+		background: #222;
 }
 
 img::selection {
-    color: #fff;
-    background: 0 0;
+		color: $colorSecundario;
+		background: 0 0;
 }
 
 img::-moz-selection {
-    color: #fff;
-    background: 0 0;
+		color: $colorSecundario;
+		background: 0 0;
 }
 
 .margen-top20 {
-  margin-top: 20px;
+	margin-top: 20px;
 }
 
 .wheat {
-   background-color:wheat;
+	 background-color:wheat;
 }
 
 .imagenLogo {
-  height: 40px;
-  margin: 5px;
+	height: 40px;
+	margin: 5px;
 }
 
 .fixed-top {
-  background: $colorPrincipal }
+	background: $colorPrincipal }
 
 .navbar-inverse .navbar-brand, .navbar-inverse .navbar-toggler {
-  font-size: 1.3rem;
-  text-transform: uppercase; 
+	font-size: 1.3rem;
+	text-transform: uppercase; 
 }
 
 .navbar{
-  background-color: $colorPrincipal;
-  background-image: none;
+	background-color: $colorPrincipal;
+	background-image: none;
 }
 .navbar-default .navbar-nav > li > a {color: white;}
 .tituloJugador {
-    background: wheat;
-    padding: 15px;
-    border: 1px solid #222;
-    box-shadow: 1px 1px 1px 1px #222;
-    border-radius: 10px;
+		background: wheat;
+		padding: 15px;
+		border: 1px solid #222;
+		box-shadow: 1px 1px 1px 1px #222;
+		border-radius: 10px;
 }
 
 [type='radio'] {
@@ -349,84 +341,121 @@ display: none;
 }
 
 .clickable:hover {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .bottom-align > * {
-    float: none;
-    display: inline-block;
+		float: none;
+		display: inline-block;
 }
 
 .bottom-align > *:last-child {
-    vertical-align: bottom;
+		vertical-align: bottom;
 }
 
 /* ========== Custom styles for radio and checkbox =============== */
 input[type="radio"],            /* hiding the default checkbox and radio button */
 input[type="checkbox"] {
-  display:none;
+	display:none;
 }
 
 input[type="radio"] + span:before,  /* Styling and positioning */
 input[type="checkbox"] + span:before {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';  /* Glyphicons replace the default elements */
-  font-weight: 400;
-  line-height: 1;
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';  /* Glyphicons replace the default elements */
+	font-weight: 400;
+	line-height: 1;
 }
 
 
 input[type="radio"] + span:before {
-  content: "\e165";    /* glyphicon record */
-  color: #EF5350;
-  margin-right: 5px;
+	content: "\e165";    /* glyphicon record */
+	color: #EF5350;
+	margin-right: 5px;
 }
 
 input[type="radio"]:checked + span:before {
-  content: "\e089";    /* glyphicon ok-circle */
-  color: #2196F3;
+	content: "\e089";    /* glyphicon ok-circle */
+	color: #2196F3;
 }
 
 
 input[type="checkbox"] + span:before {
-  content: "\e157";   /* glyphicon unchecked */
-  color: #EF5350;
-  margin-right: 5px;
+	content: "\e157";   /* glyphicon unchecked */
+	color: #EF5350;
+	margin-right: 5px;
 }
 
 input[type="checkbox"]:checked + span:before {
-  content: "\e067";   /* glyphicon checked */
-  color: #2196F3;
+	content: "\e067";   /* glyphicon checked */
+	color: #2196F3;
 }
 
+input[type="text"], select {
+	font-family: "Concert One";
+}
+		
 .checkbox label, .radio label {
-    padding-left: 0px;
+	padding-left: 0px;
 }
 
 #login-dropdown-list .dropdown-menu {
-    min-width: 300px;
-    padding: 15px;
-    left: initial;
-    right: 0;
+	min-width: 300px;
+	padding: 15px;
+	left: initial;
+	right: 0;
 }
 #login-dropdown-list input:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 }
 #login-dropdown-list input {
-    margin: 0 0 -1px;
-    border-radius: 0px;
-    position: relative;
-    z-index: 1;
+	margin: 0 0 -1px;
+	border-radius: 0px;
+	position: relative;
+	z-index: 1;
 }
 #login-dropdown-list .btn {
-    margin-top: 5px;
+	margin-top: 5px;
 }
 #login-dropdown-list #forgot-password-link, #login-dropdown-list #signup-link {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 #login-dropdown-list a {
-    cursor: pointer;
+	cursor: pointer;
+}
+
+.panel-partida {
+	margin-top: 4rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.panel-partida-label {
+	color: $colorSecundario;
+}
+
+.panel-lista-partidas {
+  margin-top: 1rem;
+}
+
+.panel-lista-partidas-interior {
+  border: solid $colorPrincipal;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.item-clickable {
+	color: $colorPrincipal;
+}
+
+.card-header {
+	color: $colorSecundario;
+	background: $colorPrincipal;
+}
+
+.margen-izquierdo {
+	margin-left: 2rem;
 }

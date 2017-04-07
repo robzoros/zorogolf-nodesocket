@@ -4,7 +4,7 @@ import { Link, browserHistory } from 'react-router'
 import CuentasWrapper from './form_cuenta.jsx'
 import { empezarPartida } from '../api/redux/acciones-partidas'
 import Store from '../api/redux/store'
-import {login} from  '../api/sesion'
+import { login, crearUsuario } from  '../api/sesion'
 
 export default class Principal extends Component {
     constructor(props) {
@@ -41,7 +41,9 @@ export default class Principal extends Component {
             email: document.getElementById("login-email").value
         }
         if (passRepetida === user.password)
-            console.log("CrearCuenta")
+            crearUsuario(user)
+        else
+            console.log("Password erronea")
     }
 
     newGame(){

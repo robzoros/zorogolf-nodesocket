@@ -8,6 +8,7 @@ const inicioUsuario = {
   logado: false,
   crearCuenta: false
 }
+const inicioPartidas = { vacio: true } 
 
 let usuario = (state = inicioUsuario, action) => {
   switch (action.type) {
@@ -17,6 +18,7 @@ let usuario = (state = inicioUsuario, action) => {
         conectado: true
       }
     case ACCIONES_REDUX.LOGIN:
+    case ACCIONES_REDUX.TOKEN:
       return {
         ...state,
         logado: true,
@@ -49,6 +51,8 @@ let datos = (state = initialState, action) => {
         campo: action.partida.campo
       }
     case ACCIONES_REDUX.NUEVO_JUGADOR:
+      console.log(state, action)
+      console.log(state.jugadores)
       return {
         ...state,
         jugadores: [...state.jugadores, action.jugador]
@@ -112,7 +116,7 @@ let eventos = (state = {}, action) => {
   }
 }
 
-let partidas =  (state = {}, action) => {
+let partidas =  (state = [], action) => {
   switch (action.type) {
     case ACCIONES_REDUX.OBTENER_PARTIDAS:
       return action.partidas

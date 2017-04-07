@@ -2,9 +2,8 @@ var mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
 
 var partidasSchema = new Schema({  
-    _id:        Schema.Types.ObjectId,
     nombre:     String ,
-    jugadorea:  [],
+    jugadores:  [],
     campo:      String,
     hoyos:      [],
     eventos:    { 
@@ -19,4 +18,4 @@ var partidasSchema = new Schema({
                   }
 });
 
-module.exports = mongoose.model('Partidas', partidasSchema); 
+module.exports = mongoose.model('Partida', partidasSchema); 

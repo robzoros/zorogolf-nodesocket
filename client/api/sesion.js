@@ -1,15 +1,18 @@
 import {LOCAL_STORAGE} from './constantes'
 import Store from './redux/store'
 import * as Socket from './socket'
+import { userLoadToken } from './redux/acciones-partidas'
+import MENSAJES_SOCKET from '../../shared/socket_const'
 
 let socket
 
-function loadUserCredentials() {
+let loadUserCredentials = () => {
     let token = window.localStorage.getItem(LOCAL_STORAGE.TOKEN)
     console.log("Token: ", token)
     if (token) {
         let name = window.localStorage.getItem(LOCAL_STORAGE.USUARIO)
-        Socket.emitirMensaje("token", token)
+        Store.dispatch(userLoadToken({token, name}))
+        //Socket.emitirMensaje("token", token)
     }
 }
 
@@ -21,9 +24,12 @@ export function inicio() {
 }
 
 export function login(usuario) {
-    Socket.emitirMensaje("login", usuario)
+    Socket.emitirMensaje(MENSAJES_SOCKET.LOGIN, usuario)
 }
 
+export function crearUsuario(usuario) {
+    Socket.emitirMensaje(MENSAJES_SOCKET.NUEVO_USUARIO, usuario)
+}
 export function saveUserCredentials(datos) {
     let token = datos.token
     window.localStorage.setItem(LOCAL_STORAGE.TOKEN, token)
