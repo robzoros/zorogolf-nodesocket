@@ -3,84 +3,74 @@ import React, { Component } from 'react';
 import JugadorActivo from './jugador_activo.jsx'
 import Recorrido from './recorrido.jsx'
 import Jugadores from './jugadores.jsx'
+import { inicio } from '../api/sesion'
+import { emitirMensaje } from '../api/socket'
+import MENSAJES_SOCKET from '../../shared/socket_const'
 //import Partidas from '../api/colecciones'
-import { nuevaPartida, addCampo, setEstadoHoyo, userLogin, actualizarJugadores } from '../api/redux/acciones-partidas';
 import * as Control from '../api/controlador'
 import { getIndiceJugador, getItem, contarEstados } from '../api/utiles'
 import { ESTADO_JUGADOR, ESTADO_PARTIDA } from '../api/constantes'
 import { datosCampo, renderRecorrido } from '../api/crear_campo.jsx'
-import ReduxStateJugDB from '../api/reduxStateJugDB.jsx'
+//import { nuevaPartida, addCampo, setEstadoHoyo, userLogin, actualizarJugadores } from '../api/redux/acciones-partidas';
+//import ReduxStateJugDB from '../api/reduxStateJugDB.jsx'
 
 class Partida extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        subscription: {partidas: Meteor.subscribe('partidas')},
         cargando: true
     }
+    this.iniciarHoyo = this.iniciarHoyo.bind(this)
     this.fichaVisible = this.fichaVisible.bind(this)
     this.iniciarGolpe = this.iniciarGolpe.bind(this)
     this.elegirAccion = this.elegirAccion.bind(this)
     this.direccion = this.direccion.bind(this)
-    this.partida = this.partida.bind(this)
     this.resolverAccion = this.resolverAccion.bind(this)
     this.boteGreen = this.boteGreen.bind(this)
   }
 
-  componentWillUnmount() {
-    this.state.subscription.partidas.stop()
-  }
 
   componentWillMount() {
-    if (!this.props.usuario.logado && Meteor.user()){
-      let usuario = {}
-      usuario.username = Meteor.user().username
-      usuario.logado = true
-      this.props.dispatch(userLogin(usuario))
-    }
-    Meteor.call('obtenerPartida', this.props.params.id, (error, result) => {
-      let indice = getIndiceJugador(result.jugadores,  Meteor.user().username)
-
-      result.id = result._id
-      this.props.dispatch(nuevaPartida(result))
-      this.props.dispatch(addCampo(result.hoyos))
-      let hoyoActual = result.hoyo_actual ? result.hoyo_actual : { hoyo: 1, estado: ['G', 'G', 'G', 'G'] }
-      this.props.dispatch(setEstadoHoyo(hoyoActual))
-
-      let filas = renderRecorrido(result.hoyos[hoyoActual.hoyo-1].recorrido)
-      let ancho = Math.ceil(datosCampo.campo_ancho / 10) * 10
-      let largo = Math.ceil(datosCampo.campo_largo / 10) * 10
-      largo+=25
-
-      let fichas = result.jugadores.map(jugador => {
-        let ficha = {}
-        if (jugador.bola)
-          ficha = { cx: jugador.bola.cx, cy: jugador.bola.cy, fila: jugador.bola.fila, columna:jugador.bola.columna }
-        else
-          ficha = { cx: datosCampo.tee_cx, cy: datosCampo.tee_cy, fila: datosCampo.tee_fila, columna: datosCampo.tee_columna }
-        ficha.color = jugador.color
-        return ficha
-      })
-      let ficha = fichas[indice]
-
-      let svg = {
-        ficha,
-        ancho,
-        largo,
-        filas
-      }
-
-      let direccion = result.jugadores[indice].status.golpe ? result.jugadores[indice].status.golpe.direccion : null
-      this.setState({cargando: false, svg, fichas, direccion})
-
-    })
-
+    inicio()
+    emitirMensaje(MENSAJES_SOCKET.CARGAR_PARTIDA, this.props.params.id)
+    this.iniciarHoyo()
   }
-
-  partida() {
-    let partida = Partidas.find(this.props.params.id).fetch()[0];
-    return partida
+  
+  componentDidMount() {
+    $('[data-toggle="tooltip"]').tooltip()
+  }
+  
+  iniciarHoyo() {
+    let indice = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.name )
+    console.log(indice)
+  
+    let filas = renderRecorrido(this.props.hoyos[this.props.hoyo_actual.hoyo-1].recorrido)
+    let ancho = Math.ceil(datosCampo.campo_ancho / 10) * 10
+    let largo = Math.ceil(datosCampo.campo_largo / 10) * 10
+    largo+=25
+  
+    let fichas = this.props.datos.jugadores.map(jugador => {
+      let ficha = {}
+      if (jugador.bola)
+        ficha = { cx: jugador.bola.cx, cy: jugador.bola.cy, fila: jugador.bola.fila, columna:jugador.bola.columna }
+      else
+        ficha = { cx: datosCampo.tee_cx, cy: datosCampo.tee_cy, fila: datosCampo.tee_fila, columna: datosCampo.tee_columna }
+      ficha.color = jugador.color
+      return ficha
+    })
+    let ficha = fichas[indice]
+  
+    let svg = {
+      ficha,
+      ancho,
+      largo,
+      filas
+    }
+  
+    let direccion = this.props.datos.jugadores[indice].status.golpe ? this.props.datos.jugadores[indice].status.golpe.direccion : null
+    this.setState({cargando: false, svg, fichas, direccion})
+  
   }
 
   direccion(hexId) {
@@ -96,33 +86,40 @@ class Partida extends Component {
     if (this.state.direccion) {
       let hoyoActual = this.props.hoyo_actual
       let jugadores = this.props.datos.jugadores
-      let indice = getIndiceJugador(jugadores, this.props.usuario.username)
-      let jugador = jugadores[indice]
+      let indice = getIndiceJugador(jugadores, this.props.usuario.name)
       let status = {}
       status.golpe = {
-        cartaPalo: getItem(jugador.palos, 'fichero', cartaPalo),
-        cartaAccion: getItem(jugador.mazo_accion.cartas, 'fichero', cartaAccion),
+        cartaPalo: getItem(jugadores[indice].palos, 'fichero', cartaPalo),
+        cartaAccion: getItem(jugadores[indice].mazo_accion.cartas, 'fichero', cartaAccion),
         direccion: this.state.direccion,
         chip
       }
       status.bola = this.state.svg.ficha
       status.estado = ESTADO_JUGADOR.ESPERANDO
       hoyoActual.estado[indice] = ESTADO_PARTIDA.ESPERANDO
+      
       jugadores[indice].status.golpe = status.golpe
       jugadores[indice].status.bola = status.bola
       jugadores[indice].status.estado = status.estado
       if ( contarEstados(hoyoActual.estado, [ESTADO_PARTIDA.ESPERANDO, ESTADO_PARTIDA.FIN_HOYO, ESTADO_PARTIDA.GREEN]) === 4 ){
         Control.resolverEleccionGolpe(jugadores, hoyoActual, this.props.params.id)
       }
-      else
-        Meteor.call('actualizarEstadoJugador', hoyoActual, jugador, jugadores[indice].status, this.props.params.id)
+      else {
+        let datosMensaje = {
+          jugador_indice: indice,
+          jugador: jugadores[indice],
+          status_hoyo: ESTADO_PARTIDA.ESPERANDO,
+          id: this.props.params.id
+        }
+        emitirMensaje(MENSAJES_SOCKET.ACTUALIZAR_JUGADOR, datosMensaje)
+      }
     }
   }
 
   elegirAccion(iAccion, iDado){
     let jugadores = this.props.datos.jugadores
     let hoyoActual = this.props.hoyo_actual
-    let indice = getIndiceJugador(jugadores, this.props.usuario.username)
+    let indice = getIndiceJugador(jugadores, this.props.usuario.name)
 
     Control.resolverAccion(jugadores, hoyoActual, this.props.eventos, indice, iAccion, iDado, this.props.params.id)
   }
@@ -130,7 +127,7 @@ class Partida extends Component {
   resolverAccion(indiceDados, indiceDadoContrario){
     let jugadores = this.props.datos.jugadores
     let hoyoActual = this.props.hoyo_actual
-    let jugador = getIndiceJugador(jugadores, this.props.usuario.username)
+    let jugador = getIndiceJugador(jugadores, this.props.usuario.name)
     switch (hoyoActual.accion_dado) {
       case 0:
         if (indiceDadoContrario && indiceDados >= 0){
@@ -161,7 +158,7 @@ class Partida extends Component {
   }
 
   boteGreen(bote){
-    let indice = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.username)
+    let indice = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.name)
     let jugador = this.props.datos.jugadores[indice]
     let hoyo = this.props.hoyos[this.props.hoyo_actual.hoyo-1]
     Control.resolverBoteGreen(jugador, bote, indice, this.props.hoyo_actual, hoyo, this.props.params.id)
@@ -170,12 +167,13 @@ class Partida extends Component {
   render() {
     let contenido=[]
     let estadoActual
+    console.log(this.props)
     if (this.props.usuario.logado && this.props.datos.jugadores && this.props.hoyo_actual) {
       estadoActual = <h1>{this.props.hoyo_actual.estado.join('-')}</h1>
-      let indice = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.username)
+      let indice = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.name)
       let jugador = this.props.datos.jugadores[indice]
       let svg = this.state.svg
-      let partida = this.partida()
+      //let partida = this.props.datos
 
       if (jugador.bola && svg) svg.ficha ={...jugador.bola, color: jugador.color}
       let recorrido = this.state.cargando ? <div className="col-lg-4" key="2">Loading...</div> : <Recorrido key="2" svg={svg} estado={jugador.status.estado} direccion={this.direccion} hexagono={this.state.direccion} boteGreen={this.boteGreen}/>
@@ -183,15 +181,17 @@ class Partida extends Component {
       contenido.push(recorrido)
       contenido.push(<Jugadores key="3" fichaVisible={this.fichaVisible} />)
 
-      contenido.push(<ReduxStateJugDB key="4" partida={partida} />)
+      //contenido.push(<ReduxStateJugDB key="4" partida={partida} />)
     }
     else {
       contenido.push(<div key="1">Loading...</div>)
     }
     return (
-      <div className="container enlinea">
+      <div className="container-fluid partida">
+        <div className="row">
+          {contenido}
+        </div>
         {estadoActual}
-        {contenido}
       </div>
     )
 

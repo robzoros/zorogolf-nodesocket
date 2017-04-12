@@ -9,5 +9,10 @@ module.exports = Object.freeze( {
 	PING: 'ping',
 	NUEVA_PARTIDA: 'nueva-partida',
 	NUEVO_JUGADOR: 'nuevo-jugador',
-	NUEVO_USUARIO: 'nuevo-usuario'
+	NUEVO_USUARIO: 'nuevo-usuario',
+	PARTIDAS_NUEVAS: 'partidas-nuevas',
+	JOIN_ROOM: "join-room",
+	EMPEZAR_PARTIDA: "empezar-partida",
+	CARGAR_PARTIDA: "cargar-partida",
+	ACTUALIZAR_JUGADOR: "actualizar-jugador"
 });

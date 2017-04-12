@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
-import {ESTADO_JUGADOR} from '../api/constantes'
+import { ESTADO_JUGADOR, COLOR_PRINCIPAL } from '../api/constantes'
 
 export default class CartasModal extends Component {
   constructor(props) {
@@ -34,10 +34,14 @@ export default class CartasModal extends Component {
         let tag = event.target.tagName.toUpperCase()
         if (tag === 'IMG' || event.target.className === 'thumbnail') {
           let element = tag === 'IMG' ? event.target.parentNode.parentNode : event.target.parentNode
-          let div = tag === 'IMG' ? event.target.parentNode : event.target
-          div.style.backgroundColor = 'grey'
-          if (this.state.div) document.getElementById(this.state.div).style.backgroundColor = 'white'
-          this.setState({idCarta: element.id, div: div.id})
+          //let div = tag === 'IMG' ? event.target.parentNode : event.target
+          element.style.backgroundColor = COLOR_PRINCIPAL
+          element.style.borderStyle = "solid"
+          if (this.state.idCarta) {
+            document.getElementById(this.state.idCarta).style.backgroundColor = "white"
+            document.getElementById(this.state.idCarta).style.borderStyle = "hidden"
+          }
+          this.setState({idCarta: element.id})
         }
       }
   }
@@ -48,20 +52,22 @@ export default class CartasModal extends Component {
 
   render() {
     return (
-      <div className="modal fade" id={this.props.id} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 className="modal-title" id="myModalLabel">{this.state.titulo}</h4>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div className="modal-body">
               <div className="container-fluid">
-              {this.props.cartas.map( (file, indice) => {
-                return <div key={indice} id={file} className="col-lg-3 col-md-4 col-xs-6 text-center" onClick={this.selected}>
-                  <div className="thumbnail" id={file+indice}><img className="img-responsive" src={file} /></div>
+                <div className="row">
+                  {this.props.cartas.map( (file, indice) => {
+                    return <div key={indice} id={file} className="col-lg-3 col-md-4 col text-center carta-modal" onClick={this.selected}>
+                      <div className="thumbnail" id={file+indice}><img className="img-fluid" src={file} /></div>
+                    </div>
+                  })}
                 </div>
-              })}
               </div>
             </div>
             <div className="modal-footer">

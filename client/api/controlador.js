@@ -1,9 +1,7 @@
-import { getDados } from './utiles'
 import Store from './redux/store'
 import { setEstadoHoyo, actualizarJugadores } from './redux/acciones-partidas';
 import {ESTADO_JUGADOR, ESTADO_PARTIDA, CONST_HEX} from './constantes'
 import * as Utiles from './utiles'
-
 
 let ordenar = (a,b) => {
   return (a._id > b._id) ? 1 : ((b._id > a._id) ? -1 : 0)
@@ -15,7 +13,7 @@ let resolverGolpe = (jugadores, hoyoActual, eventos, id) => {
     let bolaF = jugadores[iJ].status.bola.fila
     let hex = Utiles.getHexagono(bolaF, bolaC)
 
-    // Calcular resultado final de los dados
+    // Calcular partidaado final de los dados
     let umbralEvento
     switch (hex.style.fill) {
       case 'rgb(255, 0, 0)':
@@ -102,7 +100,7 @@ let resolverGolpe = (jugadores, hoyoActual, eventos, id) => {
 
     // Guardar datos
     console.log("Bola: %o", jugadores[iJ].bola)
-    jugadores[iJ].status.resultado = {
+    jugadores[iJ].status.partidaado = {
       cartas_evento: cartasEventoDireccion,
       acciones,
       desvio,
@@ -169,14 +167,14 @@ export function resolverEleccionGolpe(jugadores, hoyoActual, id) {
 
     if (jugador.status.estado === ESTADO_JUGADOR.GREEN || jugador.status.estado === ESTADO_JUGADOR.FIN_HOYO )
     {
-      let dados = getDados(1)
+      let dados = Utiles.getDados(1)
       jugador.status.dados = dados.map(dado => {return {color: jugador.color, valor: dado}})
       jugador.status.iniciativa = -100
       Meteor.call('actualizarJugador', jugador, id)
     }
     else
     {
-      let dados = getDados(jugador.status.golpe.cartaPalo.dados)
+      let dados = Utiles.getDados(jugador.status.golpe.cartaPalo.dados)
       jugador.progreso += jugador.status.golpe.cartaAccion.progreso
       jugador.status.dados = dados.map(dado => {return {color: jugador.color, valor: dado}})
       jugador.status.acciones = jugador.status.golpe.cartaAccion.acciones.map((accion) => {return {accion, dado:null, utilizado: false }})
@@ -321,7 +319,7 @@ export function rerolDado(jugadores, iJugador, dados, hoyoActual, eventos, id){
       break
     default:
       coste = 10
-      breal
+      break
   }
   jugador.progreso -= coste
   for (let i=0; i<dados.length; i++) jugador.status.dados[dados[i]].valor = Math.floor(Math.random() *  6) + 1

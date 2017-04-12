@@ -31,9 +31,9 @@ class Recorrido extends Component{
   }
 
   render(){
-    let indice = getIndiceJugador(this.props.datos.jugadores,  Meteor.user().username)
+    let indice = getIndiceJugador(this.props.datos.jugadores,  this.props.usuario.name)
     let resultado = this.props.datos.jugadores[indice].status.resultado
-    return <div className="col-lg-4 text-center margen-top20">
+    return <div className="col text-center">
       <h1 className="clickable" data-toggle="modal" data-target="#modalGreen">Hole {this.props.hoyo_actual.hoyo}</h1>
       <svg height={this.props.svg.largo/2} id="svg2" width={this.props.svg.ancho/2} version="1.1" viewBox={"0 0 " + this.props.svg.ancho +" " + this.props.svg.largo} onClick={this.getCoordenadas}>
         {this.props.svg.filas}
@@ -48,6 +48,7 @@ class Recorrido extends Component{
 
 function mapStateToProps(state) {
   return {
+    usuario: state.usuario,
     datos:state.datos,
     hoyo_actual: state.hoyo_actual
   }

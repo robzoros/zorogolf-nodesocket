@@ -52,7 +52,7 @@ let filaHex = (cx, cy, fila, cadena) => {
       let cx_m = cx_aux
       cx_aux += (CONST_HEX.RADIO * CONST_HEX.RATIO)
 
-      estilo = ESTILOS_HEX[INDICE_ESTILOS.indexOf(hex)]
+      let estilo = ESTILOS_HEX[INDICE_ESTILOS.indexOf(hex)]
 
       if(hex==='t'){
         datosCampo.tee_cx = cx_m
@@ -161,7 +161,7 @@ export function renderGreen(green, bolas) {
   let ancho = CONST_HEX.X_INI + (dimension[1]*8) * (radio * 1.5)
   let largo = CONST_HEX.Y_INI + ((7 + (5 * (dimension[0]-1))) * radio * CONST_HEX.RATIO)
   let greenRenderized = (
-    <svg width="800" height={800*largo/ancho} viewBox={"0 0 " + ancho + " " +  largo} version="1.1">
+    <svg className="img-fluid" width="800" height={800*largo/ancho} viewBox={"0 0 " + ancho + " " +  largo} version="1.1">
       {hexagonos}
       {numeros}
       {fichas}

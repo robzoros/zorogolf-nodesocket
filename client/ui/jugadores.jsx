@@ -7,15 +7,10 @@ class Jugadores extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      subscription: {partidas: Meteor.subscribe('Partidas')}
     }
 
     this.panelClicked = this.panelClicked.bind(this)
   };
-
-  componentWillUnmount() {
-    this.state.subscription.partidas.stop();
-  }
 
   panelClicked(evt) {
     let panel = evt.target
@@ -24,7 +19,7 @@ class Jugadores extends Component {
 
   render() {
     return (
-      <div className="col-lg-4 margen-top20" data-toggle="buttons">
+      <div className="col" data-toggle="buttons">
         {this.props.datos.jugadores.map((jugador) => {
           let estilo = estiloJugador(jugador.color)
           let dados = jugador.status.dados ? (
@@ -39,9 +34,9 @@ class Jugadores extends Component {
               </div>
             </div> ) : null
           if (jugador.nombre !== this.props.usuario.username)
-            return <div key={jugador.nombre} className="panel panel-default">
-                  <div className="panel-heading" id={jugador.nombre} onClick={this.panelClicked} style={estilo}>{jugador.nombre}</div>
-                  <div className="panel-body">
+            return <div key={jugador.nombre} className="card panel-jugador">
+                  <div className="card-header cursor"  data-toggle="tooltip" data-placement="top" title={"Click to show " + jugador.nombre + " ball"} id={jugador.nombre} onClick={this.panelClicked} style={estilo}>{jugador.nombre}</div>
+                  <div className="card-block">
                     <h4 className="tituloJugador">State: <span className="pull-right">{jugador.status.estado}</span></h4>
                     <h3 className="tituloJugador">Points: <span className="pull-right">{jugador.golpes}</span></h3>
                     <h3 className="tituloJugador">Progress: <span className="pull-right">{jugador.progreso}</span></h3>

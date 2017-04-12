@@ -8,7 +8,7 @@ import Dado from './dado.jsx'
 class JugadorActivo extends Component {
   constructor(props) {
     super(props);
-    let jugador = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.username)
+    let jugador = getIndiceJugador(this.props.datos.jugadores, this.props.usuario.name)
     this.state = { jugador }
 
     this.mazoAccion = this.mazoAccion.bind(this)
@@ -31,7 +31,7 @@ class JugadorActivo extends Component {
   componentWillMount(){
     let jugador = this.props.datos.jugadores[this.state.jugador]
     if (jugador.status.estado === ESTADO_JUGADOR.ESPERANDO) {this.props.direccion(jugador.status.golpe.direccion)}
-    this.props.fichaVisible(this.props.usuario.username)
+    this.props.fichaVisible(this.props.usuario.name)
   }
 
   mazoAccion() {
@@ -53,7 +53,7 @@ class JugadorActivo extends Component {
   }
 
   panelClicked(evt) {
-    this.props.fichaVisible(this.props.usuario.username)
+    this.props.fichaVisible(this.props.usuario.name)
   }
 
   paloElegido(fichero){
@@ -173,10 +173,11 @@ class JugadorActivo extends Component {
     let jugador = this.props.datos.jugadores[this.state.jugador]
     let idDados = "#" + jugador.nombre + "dados"
     let indiceDados
+    let indiceDadoContrario
     switch (this.props.hoyo_actual.accion_dado) {
       case 0:
         let jugadores = this.props.datos.jugadores
-        let indiceDadoContrario = jugadores.reduce((anterior, jug, indice) => {
+        indiceDadoContrario = jugadores.reduce((anterior, jug, indice) => {
           if (indice !== this.state.jugador)
             if (anterior)
               return anterior
@@ -247,15 +248,13 @@ class JugadorActivo extends Component {
         texto = ""
         break
     }
-    botonElegirAccionDado = texto ? <button type="button" className="btn btn-secondary pull-right margen-top20" onClick={this.elegirAccionDados}>{texto}</button> : null
-
+    botonElegirAccionDado = texto ? <button key="botonElegirAccionDado" type="button" className="btn btn-secondary pull-right margen-top20" onClick={this.elegirAccionDados}>{texto}</button> : null
     let botonInicioGolpe = <button type="button" className="btn btn-default pull-right" onClick={this.iniciarGolpe}>Go</button>
-    let elegirGolpe = (jugador.status.estado === ESTADO_JUGADOR.GOLPE) ? (
-      [<div className="tituloJugador">Choose direction, club and action card{this.validarInicio() ? botonInicioGolpe : null}</div>,
-      <div className="margen-top20">
-        <label>
-            <input id="chip" type="checkbox"/>
-            <span>chip (divide by 2)</span>
+    let elegirGolpe = (jugador.status.estado === ESTADO_JUGADOR.GOLPE) ? ( [
+      <div key="tituloJugador" className="tituloJugador">Choose direction, club and action card{this.validarInicio() ? botonInicioGolpe : null}</div>,
+      <div key="chipMessage" className="margen-top20">
+        <label className="btn btn-checkbox">chip (divide by 2) <input type="checkbox" id="chip" className="badgebox"/>
+          <span className="badge">✔</span>
         </label>
       </div>]
     ) : null
@@ -303,29 +302,32 @@ class JugadorActivo extends Component {
     elegirAccion = (jugador.status.estado === ESTADO_JUGADOR.TURNO || jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA || texto ) ? [acciones, dados] : [acciones, dados, botonElegirAccion]
 
     if (jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA && jugador.status.accion_mazo) elegirAccion.push(botonCartaDescarte)
-    if(jugador.status.golpe.cartaPalo && jugador.status.golpe.cartaPalo.modificar && jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA) {
+    if (jugador.status.golpe && jugador.status.golpe.cartaPalo && 
+        jugador.status.golpe.cartaPalo.modificar && jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA) {
       elegirAccion.push(botonIncrementar)
       elegirAccion.push(botonDecrementar)
     }
     let alerta = this.state.alerta ? (
-      <div className="col-lg-12 margen-top20 alert alert-warning fade in" role="alert">
+      <div key="alerta" className="col-lg-12 margen-top20 alert alert-warning fade in" role="alert">
         <strong>Attention!</strong> {this.state.alerta}
       </div>
     ) : null
     return (
-      <div className="col-lg-4 margen-top20">
-        <h1 className="tituloJugador" onClick={this.panelClicked}>{this.props.usuario.username}<span className="pull-right"><i className="fa fa-user fa-lg" style={{ color: jugador.color}} aria-hidden="true"></i></span></h1>
+      <div className="col">
+        <h1 className="tituloJugador" onClick={this.panelClicked}>{this.props.usuario.name}<span className="pull-right"><i className="fa fa-user fa-lg" style={{ color: jugador.color}} aria-hidden="true"></i></span></h1>
         <h2 className="tituloJugador">Points: <span className="pull-right">{jugador.golpes}</span></h2>
         <h2 className="tituloJugador">Progress: <span className="pull-right">{jugador.progreso}</span></h2>
         {elegirGolpe}
-        <div className="col-lg-6"><img className="clickable" src={cartaAccion} data-toggle="modal" data-target="#modalAccion" /></div>
-        <div className="col-lg-6"><img className="clickable" src={cartaPalo} data-toggle="modal" data-target="#modalPalos" /></div>
+        <div className="row">
+          <div className="col cursor"><img className="clickable" src={cartaAccion} data-toggle="modal" data-target="#modalAccion" /></div>
+          <div className="col cursor"><img className="clickable" src={cartaPalo} data-toggle="modal" data-target="#modalPalos" /></div>
+        </div>
         {elegirAccion}
         {botonElegirAccionDado}
         {alerta}
-        <CartasModal  cartas={this.mazoAccion()} id="modalAccion" estado={jugador.status.estado} callback={this.cartaElegida}/>
-        <CartasModal  cartas={this.mazoPalos()} id="modalPalos" estado={jugador.status.estado} callback={this.paloElegido}/>
-        <CartasModal  cartas={this.mazoDescartes()} id="modalDescarte" estado={jugador.status.estado} callback={this.cartaDescarte}/>
+        <CartasModal key="modalAccion" cartas={this.mazoAccion()} id="modalAccion" estado={jugador.status.estado} callback={this.cartaElegida}/>
+        <CartasModal key="modalPalos" cartas={this.mazoPalos()} id="modalPalos" estado={jugador.status.estado} callback={this.paloElegido}/>
+        <CartasModal key="modalDescarte" cartas={this.mazoDescartes()} id="modalDescarte" estado={jugador.status.estado} callback={this.cartaDescarte}/>
       </div>
     )
 

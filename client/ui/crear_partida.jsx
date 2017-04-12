@@ -34,16 +34,6 @@ class CrearPartida extends Component {
     jugador.nombre = this.props.usuario.name
     jugador.color = this.state.color
     emitirMensaje(MENSAJES_SOCKET.NUEVA_PARTIDA, {partida, jugador} )
-    
-    /* Meteor.call('nuevaPartida', partida, (error, result) => {
-      this.setState({id: result})
-      partida.id = result
-
-      Meteor.call('addJugador', jugador, partida.id, (err, jug) => {
-        this.props.dispatch(nuevaPartida(partida))
-        this.props.dispatch(nuevoJugador(jug))
-      })
-    })*/
   }
 
   render() {
@@ -51,10 +41,10 @@ class CrearPartida extends Component {
       <form name="juegoForm" className="col-xs-12 col-lg-8" role="form" onSubmit={this.crearPartida} >
         <h1 className="panel-partida-label">New Game Data</h1>
         <div className="row-fluid form-group" >
-          <div className="col-xs-4 col-lg-4">
+          <div className="col-4">
               <label className="control-label panel-partida-label">Game Name</label>
           </div>
-          <div className="col-xs-8 col-lg-8">
+          <div className="col-8">
             <input id="nombre"
                 className="form-control"
                 type="text"
@@ -65,10 +55,10 @@ class CrearPartida extends Component {
         </div>
 
         <div className="row-fluid form-group" >
-          <div className="col-xs-4 col-lg-4">
+          <div className="col-4">
             <label className="control-label panel-partida-label">Choose Color</label>
           </div>
-          <div className="col-xs-4 col-lg-4">
+          <div className="col-4">
             <SelectColor setColor={this.setColor} colores={COLORES}/>
           </div>
         </div>

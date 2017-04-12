@@ -2,7 +2,18 @@
   "name": "zorogolf",
   "version": "1.0.0",
   "description": "Juego de mesa de golf online",
-  "main": "main.js",
+  "main": "./server/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robzoros/zorogolf-nodesocket"
+  },
+  "keywords": [
+    "nodejs",
+    "react",
+    "socketsio"
+  ],
+  "author": "Roberto Méndez",
+  "license": "MIT",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:dev": "start npm run build_dev && start nodemon server/server.js",
@@ -14,14 +25,12 @@
     "build": "npm run build:client",
     "build_dev": "npm run build:client_dev"
   },
-  "keywords": [],
-  "author": "Roberto Méndez",
-  "license": "MIT",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "express": "^4.14.0",
+    "jsonfile": "^2.4.0",
     "jwt-simple": "^0.5.0",
     "mongoose": "^4.9.3",
     "morgan": "^1.7.0",

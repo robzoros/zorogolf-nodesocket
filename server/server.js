@@ -19,6 +19,7 @@ var compression = require('compression'),
         cert: cert
     }; */
 
+mongoose.Promise = global.Promise
 mongoose.connect(config.database, function(err, res) {
     if(err) {
         throw err;
@@ -26,6 +27,7 @@ mongoose.connect(config.database, function(err, res) {
         console.log('Conectado a MongoDB');
     }
 });
+
 
 app.use(compression());
 

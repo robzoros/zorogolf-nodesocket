@@ -13,7 +13,7 @@ export default class ResultadoModal extends Component {
     let listaCE = this.props.resultado ? this.props.resultado.cartas_evento : []
     let listaA = this.props.resultado ? this.props.resultado.acciones : []
     return (
-      <div className="modal fade" id={this.props.id} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">

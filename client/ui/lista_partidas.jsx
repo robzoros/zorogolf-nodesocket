@@ -13,8 +13,6 @@ class ListaPartidas extends Component {
   }
 
   partidas() {
-    //let filtroSE = (this.props.usuario.logado ?  {jugadores: { $not: {$elemMatch: {nombre:this.props.usuario.username}}}, "jugadores.3": {$exists: false} } : {"jugadores.3": {$exists: false}} )
-    //let filtroPR = (this.props.usuario.logado ?  {"jugadores.nombre":this.props.usuario.username} : {} )
     let filtroSE = (e) => { return (e.jugadores.length < 4 && e.jugadores.filter((j) => {return j.nombre === this.props.usuario.name}).length === 0) }
     let filtroPR = (e) => { return e.jugadores.filter((j) => {return j.nombre === this.props.usuario.name}).length > 0 }
     let filtro = (this.props.lista === LISTA_PARTIDAS.SIN_EMPEZAR ? filtroSE : filtroPR )

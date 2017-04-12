@@ -56,10 +56,6 @@ class ItemPartida extends Component{
 		var jugador = {}
 		jugador.nombre = this.props.usuario.name
 		jugador.color = this.state.color
-		//Meteor.call('addJugador', jugador, this.props.partida._id)
-		//let part = this.props.partida
-		//part.id = this.props.partida._id
-		//this.props.dispatch(nuevaPartida(part))
 		emitirMensaje(MENSAJES_SOCKET.NUEVO_JUGADOR, {id: this.props.partida._id, jugador})
 
 	}
@@ -72,32 +68,42 @@ class ItemPartida extends Component{
 		if (this.props.partida.jugadores.length === 4) {
 			browserHistory.push('/Partida/' + this.props.partida._id)
 		}
+		else {
+			emitirMensaje(MENSAJES_SOCKET.JOIN_ROOM, { id: this.props.partida._id })
+		}
+		
 	}
 
 	render() {
 		let accion = []
 		if( this.props.lista === LISTA_PARTIDAS.SIN_EMPEZAR) {
-			accion.push( <div key={"1"} className="row align-items-baseline" >
-									<div className="col-7">
-										<label id="color" className="control-label">Choose Color</label>
-									</div>
-									<div className="col-4">
-										<SelectColor setColor={this.setColor} colores={this.state.listaColores} indice={this.props.indice} />
-									</div>
-								</div> )
+			accion.push( 
+				<div key={"1"} className="row align-items-baseline" >
+					<div className="col-7">
+						<label id="color" className="control-label">Choose Color</label>
+					</div>
+					<div className="col-4">
+						<SelectColor setColor={this.setColor} colores={this.state.listaColores} indice={this.props.indice} />
+					</div>
+				</div>
+			)
 
-			accion.push( <div key={"2"} className="row form-group" >
-									<div className="col-11 text-right">
-										<button className="btn btn-success" type="submit" onClick={this.unirse}>Join</button>
-									</div>
-								</div>)
+			accion.push( 
+				<div key={"2"} className="row form-group" >
+					<div className="col-11 text-right">
+						<button className="btn btn-success" type="submit" onClick={this.unirse}>Join</button>
+					</div>
+				</div>
+			)
 		}
 		else {
-			accion.push( <div key={"1"} className="row" >
-									<div className="col-11 text-right">
-										<button className="btn btn-success" type="submit" onClick={this.cambiarPartida}>Go</button>
-									</div>
-								</div>)
+			accion.push( 
+				<div key={"1"} className="row" >
+					<div className="col-11 text-right">
+						<button className="btn btn-success" type="submit" onClick={this.cambiarPartida}>Go</button>
+					</div>
+				</div>
+			)
 		}
 
 		return <div>

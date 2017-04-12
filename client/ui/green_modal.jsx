@@ -23,7 +23,7 @@ class GreenModal extends Component {
   setDireccion() {
     let label = $('#dadosGreen label.active')
     let indiceDado = $('#dadosGreen label.active input').val()
-    let indice = getIndiceJugador(this.props.datos.jugadores,  Meteor.user().username)
+    let indice = getIndiceJugador(this.props.datos.jugadores,  this.props.usuario.name)
     let jugador = this.props.datos.jugadores[indice]
     let direccion = jugador.status.dados_green[indiceDado].valor
 
@@ -35,7 +35,7 @@ class GreenModal extends Component {
 
   setFuerza(){
     let indiceDado = $('#dadosGreen label.active input').val()
-    let indice = getIndiceJugador(this.props.datos.jugadores,  Meteor.user().username)
+    let indice = getIndiceJugador(this.props.datos.jugadores,  this.props.usuario.name)
     let jugador = this.props.datos.jugadores[indice]
     let fuerza = jugador.status.dados_green[indiceDado].valor
 
@@ -63,8 +63,9 @@ class GreenModal extends Component {
   }
 
   render() {
-    let indice = getIndiceJugador(this.props.datos.jugadores,  Meteor.user().username)
+    let indice = getIndiceJugador(this.props.datos.jugadores,  this.props.usuario.name)
     let green = this.props.hoyos[this.props.hoyo_actual.hoyo - 1].green
+    console.log(green)
     let jugador = this.props.datos.jugadores[indice]
     let estadoJugador = jugador.status.estado
     let dadosMostrar
@@ -104,22 +105,23 @@ class GreenModal extends Component {
           <label style={{color: "white"}}>_</label>
           {botonProceed}
         </div>
-      ) : null    }
+      ) : null    
+    }
 
-    bolas = this.props.datos.jugadores.map(jugador => {
+    /*bolas = this.props.datos.jugadores.map(jugador => {
       let id = jugador.status.bola.fila + "x" + jugador.status.bola.columna
       let h = green.hexagonos.indexOf(id)
       let loseta = green.losetas[h]
       return {...jugador.status.bola, loseta}
-    })
+    })*/
     let svg = renderGreen(green, bolas)
     return (
-      <div className="modal fade" id={this.props.id} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div className="modal fade" id={this.props.id} tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 className="modal-title" id="myModalLabel">Green</h4>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div className="modal-body">
               <div className="container-fluid">
@@ -150,6 +152,7 @@ class Boton extends Component {
 
 function mapStateToProps(state) {
   return {
+    usuario: state.usuario,
     datos: state.datos,
     hoyo_actual: state.hoyo_actual,
     hoyos: state.hoyos

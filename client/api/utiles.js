@@ -13,6 +13,9 @@ export function getIndiceJugador(jugadores, nombre) {
 export function estiloJugador (color) {
   let estilo = {backgroundColor: color}
   switch (color) {
+    case "Black":
+      estilo.color = 'ivory'
+      break
     case "Red":
       estilo.color = 'ivory'
       break

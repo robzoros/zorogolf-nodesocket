@@ -1,4 +1,5 @@
 export const COLORES = ['Black', 'Blue', 'Red', 'White', 'Yellow']
+export const COLOR_PRINCIPAL = "#f05f40"
 export const LISTA_PARTIDAS = {
 	SIN_EMPEZAR: 'SE',
 	PROPIAS: 'PR'

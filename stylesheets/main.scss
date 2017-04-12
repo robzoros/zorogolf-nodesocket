@@ -51,6 +51,10 @@ p {
 		line-height: 1.5;
 }
 
+.partida {
+	margin-top: 3.5rem;	
+}
+
 .bg-primary {
 		background-color: $colorPrincipal !important;
 }
@@ -151,11 +155,6 @@ header .header-content .header-content-inner p {
 
 .text-primary {
 		color: $colorPrincipal;
-}
-
-.no-gutter > [class*=col-] {
-		padding-right: 0;
-		padding-left: 0;
 }
 
 .btn-default {
@@ -329,11 +328,14 @@ img::-moz-selection {
 }
 .navbar-default .navbar-nav > li > a {color: white;}
 .tituloJugador {
-		background: wheat;
-		padding: 15px;
-		border: 1px solid #222;
-		box-shadow: 1px 1px 1px 1px #222;
-		border-radius: 10px;
+	background: wheat;
+	padding: 15px;
+	border: 1px solid #222;
+	box-shadow: 1px 1px 1px 1px #222;
+	border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 [type='radio'] {
@@ -351,46 +353,6 @@ display: none;
 
 .bottom-align > *:last-child {
 		vertical-align: bottom;
-}
-
-/* ========== Custom styles for radio and checkbox =============== */
-input[type="radio"],            /* hiding the default checkbox and radio button */
-input[type="checkbox"] {
-	display:none;
-}
-
-input[type="radio"] + span:before,  /* Styling and positioning */
-input[type="checkbox"] + span:before {
-	position: relative;
-	top: 1px;
-	display: inline-block;
-	font-family: 'Glyphicons Halflings';  /* Glyphicons replace the default elements */
-	font-weight: 400;
-	line-height: 1;
-}
-
-
-input[type="radio"] + span:before {
-	content: "\e165";    /* glyphicon record */
-	color: #EF5350;
-	margin-right: 5px;
-}
-
-input[type="radio"]:checked + span:before {
-	content: "\e089";    /* glyphicon ok-circle */
-	color: #2196F3;
-}
-
-
-input[type="checkbox"] + span:before {
-	content: "\e157";   /* glyphicon unchecked */
-	color: #EF5350;
-	margin-right: 5px;
-}
-
-input[type="checkbox"]:checked + span:before {
-	content: "\e067";   /* glyphicon checked */
-	color: #2196F3;
 }
 
 input[type="text"], select {
@@ -458,4 +420,74 @@ input[type="text"], select {
 
 .margen-izquierdo {
 	margin-left: 2rem;
+}
+
+.lista-jugadores {
+  padding-top: 1rem;
+}
+
+.panel-jugador {
+	margin-bottom: 1rem;
+}
+
+.thumbnail {
+	margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+
+//********************** CheckBox ********************
+// From http://bootsnipp.com/snippets/featured/badgebox-css-checkbox-badge
+/* Hiding the checkbox, but allowing it to be focused */
+.badgebox
+{
+  opacity: 0;
+}
+
+.badgebox + .badge
+{
+  /* Move the check mark away when unchecked */
+  text-indent: -999999px;
+  /* Makes the badge's width stay the same checked and unchecked */
+	width: 27px;
+}
+
+.badgebox:focus + .badge
+{
+  /* Set something to make the badge looks focused */
+  /* This really depends on the application, in my case it was: */
+  
+  /* Adding a light border */
+  box-shadow: inset 0px 0px 5px;
+  /* Taking the difference out of the padding */
+}
+
+.badgebox:checked + .badge
+{
+    /* Move the check mark back when checked */
+	text-indent: 0;
+}
+
+.btn-checkbox {
+		border-color: $colorPrincipal;
+		color: $colorSecundario;
+		background-color: $colorPrincipal;
+}
+
+.badge {
+  border: solid 2px;
+  padding: .1em .15em;
+  border-radius: 1em;
+}
+//********************** CheckBox ********************
+
+.cursor:hover { 
+	cursor: pointer; 
+	cursor: hand; 
+}
+
+.carta-modal {
+	border-width: 2px;
+	border-radius: 1em;
+	border-color: $colorPrincipal;
 }
