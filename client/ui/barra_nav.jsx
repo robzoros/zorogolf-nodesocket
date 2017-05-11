@@ -5,11 +5,11 @@ import CuentasWrapper from './form_cuenta.jsx'
 import { empezarPartida } from '../api/redux/acciones-partidas'
 import Store from '../api/redux/store'
 import { login, crearUsuario } from  '../api/sesion'
+import * as Socket from '../api/socket'
 
 export default class Principal extends Component {
     constructor(props) {
         super(props)
-
         this.newGame = this.newGame.bind(this)
     }
 
@@ -64,39 +64,56 @@ export default class Principal extends Component {
 }
 
 class BarraNav extends Component{ 
-  constructor(props) {
-    super(props)
-  }
+    constructor(props) {
+        super(props)
 
-  render() {
-    return (
-      <nav className="navbar navbar-toggleable-sm navbar-inverse fixed-top bg-inverse bg-faded">
-        <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#menuprincipal" 
-                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-        </button>
-        <a className="navbar-brand" onClick={this.props.newGame}><img alt="Zorogolf" className="imagenLogo" src="../img/LogoletraClaro.png"/></a>
-        <div className="collapse navbar-collapse" id="menuprincipal">
-          <ul className="navbar-nav ml-auto mt-2 mt-md-0">
-            <li className="nav-item active"><a href="#" className="nav-link">Home</a></li>
-            <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="http://example.com" id="gameDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Game <span className="caret"></span>
-                </a>
-                <div className="dropdown-menu" aria-labelledby="gameDropdownMenuLink">
-                  <a className="dropdown-item" onClick={this.props.newGame}>New Game</a>
-                  <a className="dropdown-item" href="#">Another action</a>
-                  <a className="dropdown-item" href="#">Something else here</a>
+        this.mensaje = this.mensaje.bind(this)
+        this.salvarPartida = this.salvarPartida.bind(this)
+        this.pruebaPartida = this.pruebaPartida.bind(this)
+    }
+  
+    mensaje() {
+        Socket.emitirMensaje("MENSAJE", "EMITIR SALA")
+    }
+
+    salvarPartida() {
+        console.log("SALVAR PARTIDA A FICHERO")
+        Socket.emitirMensaje("SALVAR", Store.getState().datos.id)
+    }
+
+    pruebaPartida() {
+        console.log("PRUEBA PARTIDA ")
+        Socket.emitirMensaje("EJECUTAR", {id: Store.getState().datos.id})
+    }
+
+
+    render() {
+        return (
+            <nav className="navbar navbar-toggleable-sm navbar-inverse fixed-top bg-inverse bg-faded">
+                <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#menuprincipal" 
+                        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <a className="navbar-brand" onClick={this.props.newGame}><img alt="Zorogolf" className="imagenLogo" src="../img/LogoletraClaro.png"/></a>
+                <div className="collapse navbar-collapse" id="menuprincipal">
+                    <ul className="navbar-nav ml-auto mt-2 mt-md-0">
+                        <li className="nav-item active"><a href="" className="nav-link">Home</a></li>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="http://example.com" id="gameDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Game <span className="caret"></span>
+                            </a>
+                            <div className="dropdown-menu" aria-labelledby="gameDropdownMenuLink">
+                                <a className="dropdown-item" href="#" onClick={this.props.newGame}>New Game</a>
+                                <a className="dropdown-item" href="#" onClick={this.salvarPartida}>Json File</a>
+                                <a className="dropdown-item" href="#" onClick={this.mensaje}>Message Room</a>
+                                <a className="dropdown-item" href="#" onClick={this.pruebaPartida}>Prueba</a>
+                            </div>
+                        </li>
+
+                        <CuentasWrapper cambiarPassword={this.props.cambiarPassword} login={this.props.login} crearCuenta={this.props.crearCuenta} />
+                    </ul>
                 </div>
-            </li>
-            <li className="nav-item">
-              <a href="http://askubuntu.com/questions/88384/how-can-i-repair-grub-how-to-get-ubuntu-back-after-installing-windows" className="nav-link">Ask ubuntu</a>
-            </li>
-
-            <CuentasWrapper cambiarPassword={this.props.cambiarPassword} login={this.props.login} crearCuenta={this.props.crearCuenta} />
-          </ul>
-        </div>
-      </nav>
-    )
-  }
+            </nav>
+        )
+    }
 }

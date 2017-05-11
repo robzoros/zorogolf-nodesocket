@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
-import {ESTADO_JUGADOR} from '../api/constantes'
+import CONST from '../../shared/server_const'
 import { renderGreen, greenBbox } from '../api/crear_campo.jsx'
 import { getIndiceJugador } from '../api/utiles'
 import Dado from './dado.jsx'
@@ -72,7 +72,7 @@ class GreenModal extends Component {
     let botonesFinales
     let bolas
 
-    if ( estadoJugador === ESTADO_JUGADOR.ENTRANDO_GREEN) {
+    if ( estadoJugador === CONST.ESTADO_JUGADOR.ENTRANDO_GREEN) {
       let botonDireccion = this.state.direccion ? null : (
         <Boton estado={this.state.dadoClickado} callback={this.setDireccion} texto={"Set Direction"}></Boton>
       )

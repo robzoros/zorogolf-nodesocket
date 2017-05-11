@@ -4,7 +4,7 @@ import ListaPartidas from './lista_partidas.jsx'
 import ListaJugadores from './lista_jugadores.jsx'
 import CrearPartida from './crear_partida.jsx'
 import {LISTA_PARTIDAS} from '../api/constantes'
-import {inicio} from '../api/sesion'
+import { inicio } from '../api/sesion'
 
 class PartidasUI extends Component {
 	constructor(props) {

@@ -9,13 +9,15 @@ var jsonfile = require('jsonfile')
 
 var global;
 
-var salvar = false
+const PATH = "/home/ubuntu/pruebas/"
 var mazoAccion = []
 var mazoEventos = []
 var mazoPalos = []
 var campos = []
 
-// *** Zorogolf ***
+// ********************************************************************
+//				Autenticación Usuarios
+// ********************************************************************
 // Promesa para verificar usuario
 function verificarUsuario (nombre) {
 	return new Promise ( (resolve, reject) => {
@@ -36,7 +38,6 @@ function verificarUsuario (nombre) {
 	});
 }
 
-// *** Zorogolf ***
 // Crear usuario y Password
 exports.crearUsuario = (data) => {
 	return new Promise ( (resolve, reject) => {
@@ -65,7 +66,6 @@ exports.crearUsuario = (data) => {
 	})
 };
 
-// *** Zorogolf ***
 // Comprobar usuario y Password
 exports.login = (datos) => {
 	return new Promise ( (resolve, reject) => {
@@ -88,7 +88,6 @@ exports.login = (datos) => {
 	})
 }
 
-// *** Zorogolf ***
 // Promesa para verificar token
 exports.verificarToken = (token) => {
 	return new Promise ( (resolve, reject) => {
@@ -105,8 +104,13 @@ exports.verificarToken = (token) => {
 	});
 
 };
+// ********************************************************************
+//				FIN Autenticación Usuarios
+// ********************************************************************
 
-// *** Zorogolf ***
+// ********************************************************************
+//				CONSULTAS
+// ********************************************************************
 // Obtener partidas no acabadas
 exports.getListaPartidas = (data) => {
 	return new Promise ( (resolve, reject) => {
@@ -136,22 +140,6 @@ exports.getListaPartidas = (data) => {
 	})
 };
 
-// *** Zorogolf ***
-// Añadir partida
-exports.addPartida = (dataIn) => {
-	return new Promise ( (resolve, reject) => {
-		nuevaPartida(dataIn.partida)
-			.then((part) => {
-				module.exports.addJugador({id: part._id, jugador: dataIn.jugador})
-					.then((data) => { data.partida = part; resolve(data) })
-					.catch((err) => { reject(err.message) })
-			})
-			.catch((err) => { reject(err.message) })
-	})
-}
-
-
-// *** Zorogolf ***
 // recupermos mazos y guardamos en variable global
 exports.getMazos = () => {
 	Mazo.find().exec()
@@ -164,7 +152,6 @@ exports.getMazos = () => {
 		.catch((err) => { console.log(err.message)})
 }
 
-// *** Zorogolf ***
 // recupermos campos y guardamos en variable global
 exports.getCampos = () => {
 	Campos.find().exec()
@@ -175,7 +162,6 @@ exports.getCampos = () => {
 		.catch((err) => { console.log(err.message)})
 }
 
-// *** Zorogolf ***
 // recuperarPartida
 exports.getPartida = (id) => {
 	return new Promise ( (resolve, reject) => {
@@ -184,9 +170,21 @@ exports.getPartida = (id) => {
 			.catch((err) => { console.log(err.message)})
 	})
 }
+// ********************************************************************
+//				FIN CONSULTAS
+// ********************************************************************
+
+// Añadir partida
+exports.addPartida = (dataIn) => {
+	return new Promise ( (resolve, reject) => {
+		nuevaPartida(dataIn.partida)
+			.then((partida) => { return module.exports.addJugador({id: partida._id, jugador: dataIn.jugador})	})
+			.then((data) => { resolve(data) })
+			.catch((err) => { reject(err.message) })
+	})
+}
 
 
-// *** Zorogolf ***
 // Añadimos un jugador a la partida
 exports.addJugador = (data) => {
 	return new Promise ( (resolve, reject) => {
@@ -208,7 +206,6 @@ exports.addJugador = (data) => {
 
 };
 
-// *** Zorogolf ***
 // Iniciamos partida añadiendo
 // - Campo
 // - Mazo Eventos
@@ -229,7 +226,6 @@ exports.initPartida = (id, nombre) => {
 
 }
 
-// *** Zorogolf ***
 // Actualizamos estado y jugador
 exports.setJugadorEstado = (datos) => {
 	return new Promise ( (resolve, reject) => {
@@ -247,7 +243,33 @@ exports.setJugadorEstado = (datos) => {
 	})
 }
 
-// *** Zorogolf ***
+// Actualizamos estado y jugadores
+exports.setJugadoresEstado = (datos) => {
+	return new Promise ( (resolve, reject) => {
+		Partida.findByIdAndUpdate( 
+			datos.id, 
+			{ $set: { jugadores: datos.jugadores, hoyo_actual: datos.hoyo_actual } },
+			{ "new": true } )
+	    	.then((partida) => {
+	    		resolve({success: true, partida})
+	    	})
+	    	.catch( (err) => { reject(err.message) })
+	})
+}
+
+// Actualizamos Partida
+exports.actualizaPartida = (data) => {
+	return new Promise ( (resolve, reject) => {
+		Partida.findByIdAndUpdate( data.id, 
+			{ $set: data},
+			{ "new": true } )
+	    	.then((partida) => {
+	    		resolve(partida)
+	    	})
+	    	.catch( (err) => { reject(err.message) })
+	})
+}
+
 // Creamos una partida nueva
 var nuevaPartida = (partida) => {
 	// Creamos partida
@@ -259,213 +281,18 @@ var nuevaPartida = (partida) => {
 	return part.save() 
 };
 
-// Funciones que llamarán en las promesas
-actualizaPartida = function (req, res) {
-	Partida.findById(req.params.id, function(err, partida) {
-		if (err) {
-			console.log(err);
-			return res.status(500).send(err.message);
-		}
-		if (partida.usuario === req.body.usuario) {
-			partida.nombre = req.body.nombre;
-			partida.juego = req.body.juego;
-			partida.loc = req.body.loc;
-			partida.fecha = req.body.fecha;
-			partida.jugadores = req.body.jugadores;
-			partida.empresas = req.body.empresas;
-			partida.dividendos = req.body.dividendos;
-
-			partida.save(function(err){
-				if (err) {
-					console.log(err);
-					return res.status(500).send(err.message);
-				}
-				res.status(200).jsonp(partida);
-			});
-		}
-		else {
-			console.log('La partida no pertenece al usuario.');
-			return res.status(403).send('La partida no pertenece al usuario.');
-		}
-	});
-};
-
-
-nuevoJuego = (req, res) => {
-	var juego = new Juego({
-		_name:   	 req.body._name,
-		_id:         req.body._id,
-		description: req.body.description,
-		companies:   req.body.companies
-	});
-	juego.save(function(err) {
-
-		if (err) {
-			console.log(err);
-			return res.status(500).send( err.message);
-		}
-		res.status(200).jsonp(juego);
-	}); 
-};
-
-deleteJuego = (req, res) => {
-	console.log(req.params);
-	var resp = res;
-	Juego.findById(req.params.id, function(err, juego) {
-		console.log(juego);
-		juego.remove(function(err) {
-			if (err) {
-				console.log(err);
-				return res.status(500).send(err.message);
-			};
-			console.log('Borrando');
-			resp.status(200).send();
-		});
-	});
-};
-		
-actualizarJuego = (req, res) => {
-	var resp = res;
-	Juego.findById(req.params.id, function(err, juego) {
-		if (err) {
-			console.log(err);
-			return res.status(500).send( err.message);
-		};
-		juego._name = req.body._name;
-		juego.description = req.body.description;
-		juego.companies = req.body.companies;
-
-		juego.save(function(err){
-			if (err) {
-				console.log(err);
-				return resp.status(500).send( err.message);
-			};
-			res.status(200).jsonp(juego);
-		});
-	});
-};
-
-obtenerPartida = function (req, res) {
-	Partida.findById(req.params.id, function(err, partida) {
-		if(err){
-			console.log(err);
-			return res.status(500).send(err.message);
-		}
-		else {
-			if (partida)
-				res.status(200).jsonp(partida);
-			else
-				res.status(404).send("Partida no encontrada");
-		}
-	});
-};
-
-//CRUD Partidas
-/*exports.addPartida = (req, res) => {
-	verificarUsuario(req, res).then( function() {
-		nuevaPartida(req, res);
-	});
-};
-
-exports.getPartida = (req, res) => {  
-	//verificarToken(req, res, false).then( function() {
-		obtenerPartida(req, res);
-	//});
-};
-*/
-
-exports.putPartida = (req, res) => {
-	verificarUsuario(req, res).then( function(){
-		actualizaPartida(req, res);
-	});
-};
-
-	
-exports.borrarPartida = (req, res) => {
-	var token = global.getToken(req.headers);
-	if (token) {
-		var decoded = jwt.decode(token, config.secret);
-
-		Partida.findById(req.params.id, function(err, partida) {
-			if (partida.usuario === decoded.name) {
-				partida.remove(function(err) {
-					if (err) {
-						console.log(err);
-						return res.status(500).send(err.message);
-					};
-					res.status(200).send();
-				});
-			}
-			else {
-				console.log('La partida no pertenece al usuario.');
-				return res.status(403).send('La partida no pertenece al usuario.');
-			}
-		});
-	}
-	else {
-		console.log('Authentication failed. Token not found.');
-		return res.status(403).send('Authentication failed. Token not found.');
-	};
-	
-};
-
-//CRUD Juegos
-exports.addJuego = (req, res) => {
-	verificarToken(req, res, true).then( function () {
-		nuevoJuego(req, res);
-	});
-};
-
-exports.getJuegos = (req, res) => {
-	//console.log('GET /juegos');
-	
-	Juego.find(function(err, juegos) {
-		if (err) {
-			console.log(err);
-			return res.status(500).send(err.message);
-		};
-		res.status(200).jsonp(juegos);
-	});
-};
-
-exports.getJuego = (req, res) => {
-	//console.log('GET /juego id: ' +req.params.id);
-	
-	Juego.findById(req.params.id,function(err, juego) {
-		if (err) {
-			console.log(err);
-			return res.status(500).send(err.message);
-		};
-		if (juego)
-			res.status(200).jsonp(juego);
-		else
-			res.status(404).send("Juego no encontrado");
-	});
-};
-
-exports.putJuego = (req, res) => {
-	verificarToken(req, res, true).then(function() {
-		actualizarJuego(req, res);
-	});
-};
-	
-exports.borrarJuego = (req, res) => {
-	verificarToken(req, res, true).then( function() {
-		deleteJuego(req, res);
-	});
-};
 
 //*************************************************
 // Salvar documento to file
 //************************************************
-exports.salvarDocumento = (nombre, fichero) => {
-	if (!salvar) return null
-	Partida.findOne( {nombre: nombre} ).exec()
+exports.salvarDocumento = (id) => {
+	Partida.findById( id ).exec()
 		.then((partida) => {
-			console.log("escribir doc %s con nombre %s en fichero %s", partida._id, nombre, fichero)
-			jsonfile.writeFile(fichero, partida, {spaces: 2}, function(err) {
-			  console.error(err)
-			})
+			var nombre = partida.nombre.replace(/ /g, "_")
+			var fecha = (new Date()).toISOString().slice(0,19).replace(/[-:T]/g,"")
+			var fichero = PATH + fecha + nombre + ".json"
+			console.log("escribir doc %s con nombre %s en fichero %s", partida._id, partida.nombre, fichero)
+			jsonfile.writeFile(fichero, partida, {spaces: 2}, function(err) { console.log(err) })
 			
 		})
 		.catch((err) => {console.log(err)})

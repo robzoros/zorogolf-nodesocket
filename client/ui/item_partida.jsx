@@ -6,7 +6,7 @@ import { emitirMensaje } from '../api/socket'
 import SelectColor from './color.jsx'
 import { nuevaPartida } from '../api/redux/acciones-partidas'
 import { COLORES, LISTA_PARTIDAS } from '../api/constantes'
-import MENSAJES_SOCKET from '../../shared/socket_const'
+import MENSAJES_SOCKET from '../../shared/server_const'
 
 
 class ItemPartida extends Component{
@@ -65,13 +65,12 @@ class ItemPartida extends Component{
 		let part = this.props.partida
 		part.id = this.props.partida._id
 		this.props.dispatch(nuevaPartida(part))
-		if (this.props.partida.jugadores.length === 4) {
-			browserHistory.push('/Partida/' + this.props.partida._id)
-		}
-		else {
-			emitirMensaje(MENSAJES_SOCKET.JOIN_ROOM, { id: this.props.partida._id })
-		}
+		emitirMensaje(MENSAJES_SOCKET.JOIN_ROOM, { id: part.id })
 		
+		if (this.props.partida.jugadores.length === 4) {
+			browserHistory.push('/Partida/' + part.id)
+		}
+
 	}
 
 	render() {

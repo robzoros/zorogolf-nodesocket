@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
-import { ESTADO_JUGADOR } from '../api/constantes'
+import CONST from '../../shared/server_const'
 import { getIndiceJugador, hexDestino } from '../api/utiles'
 import GreenModal from './green_modal.jsx'
 import ResultadoModal from './resultado_modal.jsx'
@@ -17,7 +17,7 @@ class Recorrido extends Component{
   }
 
   getCoordenadas(evt) {
-    if (this.props.estado === ESTADO_JUGADOR.GOLPE){
+    if (this.props.estado === CONST.ESTADO_JUGADOR.GOLPE){
       if (evt.target.tagName === 'polygon'){
         this.setState({hex_destino: hexDestino(evt.target)})
         this.props.direccion(evt.target.id)
@@ -33,6 +33,7 @@ class Recorrido extends Component{
   render(){
     let indice = getIndiceJugador(this.props.datos.jugadores,  this.props.usuario.name)
     let resultado = this.props.datos.jugadores[indice].status.resultado
+    console.log("FICHA: ", this.props.svg.ficha)
     return <div className="col text-center">
       <h1 className="clickable" data-toggle="modal" data-target="#modalGreen">Hole {this.props.hoyo_actual.hoyo}</h1>
       <svg height={this.props.svg.largo/2} id="svg2" width={this.props.svg.ancho/2} version="1.1" viewBox={"0 0 " + this.props.svg.ancho +" " + this.props.svg.largo} onClick={this.getCoordenadas}>

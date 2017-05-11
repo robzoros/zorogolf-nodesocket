@@ -2,7 +2,7 @@ import { browserHistory } from 'react-router'
 import Store from './redux/store'
 import * as Acciones from './redux/acciones-partidas'
 import { saveUserCredentials } from './sesion'
-import MENSAJES_SOCKET from '../../shared/socket_const'
+import MENSAJES_SOCKET from '../../shared/server_const'
 
 let socket
 
@@ -30,7 +30,6 @@ export function conectar() {
 		// **********************************
 		// pide conexión
 		socket.on(MENSAJES_SOCKET.LOGIN_TOKEN, (data) => {
-			console.log("login-token: ", data)
 			let token = Store.getState().usuario.token
 			if (token){
 				emitirMensaje(MENSAJES_SOCKET.TOKEN, token)
@@ -40,7 +39,6 @@ export function conectar() {
 
 		// recibe confirmación de login
 		socket.on(MENSAJES_SOCKET.LOGIN, (data) => {
-			console.log("login: ", data)
 			if (data.success) {
 					saveUserCredentials(data)
 					registerBegin(data)
@@ -49,7 +47,6 @@ export function conectar() {
 		
 		// recibe confirmación de token
 		socket.on(MENSAJES_SOCKET.TOKEN, (data) => {
-			console.log("Token: ", data)
 			if (data.success) {
 				registerBegin(data)
 			}
@@ -116,6 +113,7 @@ export function conectar() {
 				let partida = data.partida
 			  partida.id = partida._id
 		  	Store.dispatch(Acciones.nuevaPartida(partida))
+		  	Store.dispatch(Acciones.actualizarJugadores(partida.jugadores))
 			  Store.dispatch(Acciones.addCampo(partida.hoyos))
 			  let hoyoActual = partida.hoyo_actual ? partida.hoyo_actual : { hoyo: 1, estado: ['G', 'G', 'G', 'G'] }
 			  Store.dispatch(Acciones.setEstadoHoyo(hoyoActual))
@@ -123,7 +121,7 @@ export function conectar() {
 		})
 		
 		socket.on(MENSAJES_SOCKET.ACTUALIZAR_JUGADOR, (data) => {
-			console.log("Cargar Partida: ", data)
+			console.log("Actualizar Jugador: ", data)
 			if (data.success) {
 				let partida = data.partida
 			  partida.id = partida._id
@@ -131,12 +129,53 @@ export function conectar() {
 			  Store.dispatch(Acciones.setEstadoHoyo(partida.hoyo_actual))
 			}
 		})
+		
+		/*
+		socket.on(MENSAJES_SOCKET.GOLPE_INICIADO, (data) => {
+			console.log("Golpe Iniciado: ", data)
+			if (data.success) {
+				let partida = data.partida
+			  partida.id = partida._id
+		  	Store.dispatch(Acciones.actualizarJugadores(partida.jugadores))
+			  Store.dispatch(Acciones.setEstadoHoyo(partida.hoyo_actual))
+			}
+		})
+		
+		socket.on(MENSAJES_SOCKET.ACCION_JUGADOR, (data) => {
+			console.log("Accion Jugador: ", data)
+			if (data.success) {
+				let partida = data.partida
+			  partida.id = partida._id
+		  	Store.dispatch(Acciones.actualizarJugadores(partida.jugadores))
+			  Store.dispatch(Acciones.setEstadoHoyo(partida.hoyo_actual))
+			}
+		})		
+		
+		socket.on(MENSAJES_SOCKET.FIN_ACCIONES, (data) => {
+			console.log("Accion Jugador: ", data)
+			if (data.success) {
+				let partida = data.partida
+			  partida.id = partida._id
+		  	Store.dispatch(Acciones.actualizarJugadores(partida.jugadores))
+			  Store.dispatch(Acciones.setEstadoHoyo(partida.hoyo_actual))
+			}
+		})
+		*/
+		// **********************************
+		//      PRUEBAS
+		// **********************************
+		socket.on("MENSAJE", (data) => {
+			console.log("MENSAJE: ", data)
+		})
+		
+		
 	}
 	
 }
 
 export function emitirMensaje(tipo, datos) {
 	socket.emit(tipo, datos)
+
 	return true
 }
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import { userLogout } from '../api/redux/acciones-partidas'
+import { logout } from '../api/sesion'
 
 class CuentasWrapper extends Component {
     constructor(props) {
@@ -18,6 +20,7 @@ class CuentasWrapper extends Component {
         this.setState({crearCuenta: true})
         console.log(this.state)
     }
+    
     crearCuentaFalse() {
         this.setState({crearCuenta: false})
         console.log(this.state)
@@ -90,6 +93,8 @@ const mapDispatchToProps = (dispatch) => {
         logout: () => {
             console.log("logout")
             dispatch(userLogout({}))
+            logout()
+      			browserHistory.push('/')
         }
     }
 }

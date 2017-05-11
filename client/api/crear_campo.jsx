@@ -3,6 +3,14 @@ import Hexagono from '../ui/hexagono.jsx';
 import {ESTILOS_HEX, INDICE_ESTILOS, CONST_HEX, GREEN_HEX} from './constantes'
 import {coordenadasBandera} from './redux/acciones-partidas'
 
+export function centroHexagono(ficha) {
+  let fila = ficha.fila -1
+  let xINIParImpar = CONST_HEX.X_INI + ( (fila % 2) ? (CONST_HEX.RADIO * CONST_HEX.RATIO / 2) : 0 )
+
+  ficha.cy = CONST_HEX.Y_INI + (fila * CONST_HEX.RADIO * 1.5)
+  ficha.cx = xINIParImpar + (ficha.columna * (CONST_HEX.RADIO * CONST_HEX.RATIO))
+  return ficha
+}
 
 export var datosCampo = {
   tee_cx:0,

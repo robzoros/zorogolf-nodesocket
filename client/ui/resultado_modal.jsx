@@ -17,14 +17,14 @@ export default class ResultadoModal extends Component {
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 className="modal-title" id="myModalLabel">Final result</h4>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div className="modal-body">
-              <div className="container-fluid">
+              <div className="row">
                 {listaCE.map( (carta, indice) => {
-                  return <div key={indice} id={carta.fichero} className="col-lg-3 col-md-4 col-xs-6 text-center">
-                    <div className="thumbnail" id={carta.fichero+indice}><img className="img-responsive" src={carta.fichero} /></div>
+                  return <div key={indice} id={carta.fichero} className="col text-center">
+                    <div className="thumbnail" id={carta.fichero+indice}><img className="img-fluid" src={carta.fichero} /></div>
                   </div>
                 })}
               </div>
@@ -32,7 +32,7 @@ export default class ResultadoModal extends Component {
                 {listaA.map((accion, indice) => {
                   let dado = accion.dado ? accion.dado : {color: 'ivory', valor: 0}
                   return  <label key={"accion" + indice} className={"btn btn-primary btn-margen"}>
-                            <input type="radio" autocomplete="off" value={indice} />
+                            <input type="radio" autoComplete="off" value={indice} />
                             <Dado dado={dado} />
                           </label>
                 })}

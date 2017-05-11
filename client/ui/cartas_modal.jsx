@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import React, {Component} from 'react';
-import { ESTADO_JUGADOR, COLOR_PRINCIPAL } from '../api/constantes'
+import { COLOR_PRINCIPAL } from '../api/constantes'
+import CONST from '../../shared/server_const'
 
 export default class CartasModal extends Component {
   constructor(props) {
@@ -30,7 +31,7 @@ export default class CartasModal extends Component {
 
   selected(event){
     if(event)
-      if (this.props.estado === ESTADO_JUGADOR.GOLPE ) {
+      if (this.props.estado === CONST.ESTADO_JUGADOR.GOLPE ) {
         let tag = event.target.tagName.toUpperCase()
         if (tag === 'IMG' || event.target.className === 'thumbnail') {
           let element = tag === 'IMG' ? event.target.parentNode.parentNode : event.target.parentNode
@@ -47,7 +48,7 @@ export default class CartasModal extends Component {
   }
 
   ok() {
-    if (this.props.estado === ESTADO_JUGADOR.GOLPE ) this.props.callback(this.state.idCarta)
+    if (this.props.estado === CONST.ESTADO_JUGADOR.GOLPE ) this.props.callback(this.state.idCarta)
   }
 
   render() {

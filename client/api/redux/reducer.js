@@ -27,8 +27,11 @@ let usuario = (state = inicioUsuario, action) => {
       }
     case ACCIONES_REDUX.LOGOUT:
       return {
-        ...state,
-        logado: false
+        conectado: false,
+        logado: false,
+        crearCuenta: false,
+        name: null,
+        token: null
       }
     default:
       return state

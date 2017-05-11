@@ -4,7 +4,7 @@ import { emitirMensaje } from '../api/socket'
 import SelectColor from './color.jsx';
 import { nuevaPartida, nuevoJugador } from '../api/redux/acciones-partidas';
 import { COLORES } from '../api/constantes'
-import MENSAJES_SOCKET from '../../shared/socket_const'
+import MENSAJES_SOCKET from '../../shared/server_const'
 
 class CrearPartida extends Component {
   constructor(props) {
@@ -25,9 +25,9 @@ class CrearPartida extends Component {
 
   crearPartida(e) {
     e.preventDefault()
-    var partida = {}
-    var jugador = {}
-    var jugadores = []
+    let partida = {}
+    let jugador = {}
+    let jugadores = []
     partida.nombre = document.getElementById('nombre').value
     partida.jugadores = jugadores
     partida.campo = 'Zorocampo'

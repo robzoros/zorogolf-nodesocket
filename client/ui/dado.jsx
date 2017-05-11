@@ -7,7 +7,7 @@ export default class Dado extends Component {
 
 
   render() {
-    let colorPunto = this.props.dado.color === 'Blue' ? '#ffffff' : '#000000'
+    let colorPunto = (this.props.dado.color === 'Blue' || this.props.dado.color === 'Black') ? '#ffffff' : '#000000'
     let rectangulo = <rect key="rect" ry="105" rx="105" y="10" x="10" height="400" width="400" id="rectangulo" fill={this.props.dado.color} />
     let punto1 = <circle key="punto1" r="45" cx="110" cy="110" id="punto1" fill={colorPunto} />
     let punto2 = <circle key="punto2" r="45" cx="110" cy="210" id="punto2" fill={colorPunto} />
@@ -41,7 +41,7 @@ export default class Dado extends Component {
         dado = [rectangulo]
         break;
     }
-    return  <svg version="1.1" id="svg4144" viewBox="0 0 420 420" height="50" width="50">
+    return  <svg className="svg-dice" version="1.1" id="svg4144" viewBox="0 0 420 420" >
               {dado}
             </svg>
   }

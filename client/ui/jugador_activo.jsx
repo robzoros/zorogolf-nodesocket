@@ -1,7 +1,9 @@
-import { connect } from 'react-redux';
+ /* global $ */
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import { getIndiceJugador } from '../api/utiles'
-import {PREFIJO_CARTAS, CARTAS_PALOS, ESTADO_JUGADOR} from '../api/constantes'
+import {PREFIJO_CARTAS, CARTAS_PALOS } from '../api/constantes'
+import CONST from '../../shared/server_const'
 import CartasModal from './cartas_modal.jsx'
 import Dado from './dado.jsx'
 
@@ -20,17 +22,19 @@ class JugadorActivo extends Component {
     this.iniciarGolpe = this.iniciarGolpe.bind(this)
     this.validarInicio = this.validarInicio.bind(this)
     this.elegirDado = this.elegirDado.bind(this)
-    this.elegirAccionDados = this.elegirAccionDados.bind(this)
+    this.ejecutarAccion = this.ejecutarAccion.bind(this)
     this.actualizar = this.actualizar.bind(this)
     this.incDado = this.incDado.bind(this)
     this.decDado = this.decDado.bind(this)
-    this.accionPrevia = this.accionPrevia.bind(this)
-    this.deshabilitarBoton = this.deshabilitarBoton.bind(this)
+    this.incdecDado = this.incdecDado.bind(this)
+    this.estadoEspera = this.estadoEspera.bind(this)
+    this.textoAccion = this.textoAccion.bind(this)
+    //this.deshabilitarBoton = this.deshabilitarBoton.bind(this)
   }
 
   componentWillMount(){
     let jugador = this.props.datos.jugadores[this.state.jugador]
-    if (jugador.status.estado === ESTADO_JUGADOR.ESPERANDO) {this.props.direccion(jugador.status.golpe.direccion)}
+    if (jugador.status.estado === CONST.ESTADO_JUGADOR.ESPERANDO) {this.props.direccion(jugador.status.golpe.direccion)}
     this.props.fichaVisible(this.props.usuario.name)
   }
 
@@ -70,11 +74,10 @@ class JugadorActivo extends Component {
 
   iniciarGolpe(){
     let chip = $("#chip")[0].checked
-    console.log("Checked: %o", chip)
     let jugador = this.props.datos.jugadores[this.state.jugador]
     let cartaAccion
     let cartaPalo
-    if (jugador.status.estado === ESTADO_JUGADOR.GOLPE) {
+    if (jugador.status.estado === CONST.ESTADO_JUGADOR.GOLPE) {
       cartaAccion = this.state.cartaAccion ? this.state.cartaAccion : PREFIJO_CARTAS.CARTAS_BACK_ACCION + jugador.color + ".png"
       cartaPalo =  this.state.cartaPalo ? this.state.cartaPalo : PREFIJO_CARTAS.CARTAS_BACK_PALO + jugador.color + ".png"
     }
@@ -89,7 +92,7 @@ class JugadorActivo extends Component {
     let jugador = this.props.datos.jugadores[this.state.jugador]
     let cartaAccion
     let cartaPalo
-    if (jugador.status.estado === ESTADO_JUGADOR.GOLPE) {
+    if (jugador.status.estado === CONST.ESTADO_JUGADOR.GOLPE) {
       cartaAccion = this.state.cartaAccion ? this.state.cartaAccion : PREFIJO_CARTAS.CARTAS_BACK_ACCION + jugador.color + ".png"
       cartaPalo =  this.state.cartaPalo ? this.state.cartaPalo : PREFIJO_CARTAS.CARTAS_BACK_PALO + jugador.color + ".png"
     }
@@ -115,12 +118,12 @@ class JugadorActivo extends Component {
     if (indiceAccion && indiceDados) this.props.elegirAccion(indiceAccion, indiceDados)
   }
 
-  deshabilitarBoton() {
+  /*deshabilitarBoton() {
     let jugador = this.props.datos.jugadores[this.state.jugador]
     let idDados = "#" + jugador.nombre + "dados"
     let indiceDados = $(idDados + ' label.active input').val()
     return this.state.dado || (! indiceDados)
-  }
+  }*/
 
   incDado() {
     let jugador = this.props.datos.jugadores[this.state.jugador]
@@ -135,7 +138,7 @@ class JugadorActivo extends Component {
         this.setState({alerta: null})
       }
       else {
-        this.setState({alerta: "Can't decrease over six"})
+        this.setState({alerta: "Can't increase over six"})
       }
     }
     else {
@@ -165,11 +168,14 @@ class JugadorActivo extends Component {
     }
   }
 
-  accionPrevia(){
-
+  incdecDado(){
+    this.setState({alerta: null})
+    let jugador = this.props.datos.jugadores[this.state.jugador]
+    jugador.status.estado = CONST.ESTADO_JUGADOR.ESPERANDO
+    this.props.accionPrevia(jugador)
   }
 
-  elegirAccionDados(){
+  ejecutarAccion(){
     let jugador = this.props.datos.jugadores[this.state.jugador]
     let idDados = "#" + jugador.nombre + "dados"
     let indiceDados
@@ -187,12 +193,12 @@ class JugadorActivo extends Component {
             return anterior
         }, null)
         indiceDados = $(idDados + ' label.active input').val()
-        console.log(indiceDadoContrario)
         break
       case 1:
         indiceDados = $(idDados + ' input:checked').map((a, b) => { return parseInt(b.value)})
         break
       case 2:
+        console.log($(idDados + ' input:checked'))
         indiceDados = $(idDados + ' input:checked').map((a, b) => { return parseInt(b.value)})
         break
       case 3:
@@ -211,12 +217,45 @@ class JugadorActivo extends Component {
     else
       this.setState({dado: b})
   }
+  
+  estadoEspera(estado) {
+    return ( 
+      estado === CONST.ESTADO_JUGADOR.TURNO || 
+      estado === CONST.ESTADO_JUGADOR.FIN_ACCIONES || 
+      estado === CONST.ESTADO_JUGADOR.ACCION || 
+      estado === CONST.ESTADO_JUGADOR.ESPERANDO || 
+      estado === CONST.ESTADO_JUGADOR.ACCION_PREVIA 
+    )
+  }
+  
+  textoAccion(accion) {
+    let texto
+    switch (accion) {
+      case 0:
+        texto = "Choose one Die from oponent and one of your dice"
+        break
+      case 1:
+        texto = "Choose up to three dice to turn over"
+        break
+      case 2:
+        texto = "Choose Dice to rerol"
+        break
+      case 3:
+        texto = "Choose Die to add 1 point"
+        break
+      default:
+        texto = ""
+        break
+    }
+    return texto
+    
+  }
 
   render() {
     let jugador = this.props.datos.jugadores[this.state.jugador]
     let cartaAccion
     let cartaPalo
-    if (jugador.status.estado === ESTADO_JUGADOR.GOLPE) {
+    if (jugador.status.estado === CONST.ESTADO_JUGADOR.GOLPE) {
       cartaAccion = this.state.cartaAccion ? this.state.cartaAccion : PREFIJO_CARTAS.CARTAS_BACK_ACCION + jugador.color + ".png"
       cartaPalo =  this.state.cartaPalo ? this.state.cartaPalo : PREFIJO_CARTAS.CARTAS_BACK_PALO + jugador.color + ".png"
     }
@@ -226,31 +265,14 @@ class JugadorActivo extends Component {
     }
 
     let accionDado = this.props.hoyo_actual.accion_dado
-    let typeInputAccion = "radio"
-    let botonElegirAccionDado
-    let texto
-    switch (accionDado) {
-      case 0:
-        texto = "Choose one Die from oponent and one of your dice"
-        break
-      case 1:
-        texto = "Choose up to three dice to turn over"
-        typeInputAccion = "checkbox"
-        break
-      case 2:
-        texto = "Choose Dice to rerol"
-        typeInputAccion = "checkbox"
-        break
-      case 3:
-        texto = "Choose Die to add 1 point"
-        break
-      default:
-        texto = ""
-        break
-    }
-    botonElegirAccionDado = texto ? <button key="botonElegirAccionDado" type="button" className="btn btn-secondary pull-right margen-top20" onClick={this.elegirAccionDados}>{texto}</button> : null
+    let typeInputAccion = (accionDado === 1 || accionDado === 2) ? "checkbox" : "radio"
+    let texto = this.textoAccion(accionDado)
+
+    // **************************************************************************
+    // Elegir Golpe {elegirGolpe}
+    // **************************************************************************
     let botonInicioGolpe = <button type="button" className="btn btn-default pull-right" onClick={this.iniciarGolpe}>Go</button>
-    let elegirGolpe = (jugador.status.estado === ESTADO_JUGADOR.GOLPE) ? ( [
+    let elegirGolpe = (jugador.status.estado === CONST.ESTADO_JUGADOR.GOLPE) ? ( [
       <div key="tituloJugador" className="tituloJugador">Choose direction, club and action card{this.validarInicio() ? botonInicioGolpe : null}</div>,
       <div key="chipMessage" className="margen-top20">
         <label className="btn btn-checkbox">chip (divide by 2) <input type="checkbox" id="chip" className="badgebox"/>
@@ -260,70 +282,93 @@ class JugadorActivo extends Component {
     ) : null
 
 
-    let elegirAccion
-    let dados
-    let botonElegirAccion
+    // ************************************************************************************
+    // Bloque de dados y acciones {elegirAccion}
+    // ************************************************************************************
+
+    // Dados a elegir y elegidos
     let acciones = jugador.status.acciones ? (
-      <div className="col-lg-6" key='acciones'>
-        <div className="margen-top20" id={jugador.nombre + "accion"} data-toggle="buttons">
+      <div className="col" key='acciones'>
+        <div className="margen-top20 text-center" id={jugador.nombre + "accion"} data-toggle="buttons">
           {jugador.status.acciones.map((accion, indice) => {
             let dado = accion.dado ? accion.dado : {color: 'ivory', valor: 0}
-            return  <label key={"accion" + indice} className={"btn btn-primary btn-margen" + (accion.utilizado ? " disabled" : "")} onClick={this.actualizar.bind(this, 1, accion)}>
-                      <input type="radio" autocomplete="off" value={indice} />
+            return  <label key={"accion" + indice} className={"btn btn-primary btn-dice" + (accion.utilizado ? " disabled" : "")} onClick={this.actualizar.bind(this, 1, accion)}>
+                      <input type="radio" autoComplete="off" value={indice} />
                       <Dado dado={dado} />
                     </label>
           })}
         </div>
       </div>
     ) : null
-    if (jugador.status.estado === ESTADO_JUGADOR.ACCION
-        || jugador.status.estado === ESTADO_JUGADOR.TURNO
-        || jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA ) {
-      dados = (
-        <div className="col-lg-6" key='dados'>
-          <div className="margen-top20" data-toggle="buttons" id={jugador.nombre + "dados"}>
-            {jugador.status.dados.map((dado, indice) => {
-              return  <label key={"dados" + indice} className="btn btn-primary btn-margen" onClick={this.actualizar.bind(this, 2, dado)}>
-                        <input type={typeInputAccion} autocomplete="off" value={indice} />
-                        <Dado dado={dado} />
-                      </label> })}
-          </div>
+    
+    let dados = this.estadoEspera(jugador.status.estado) ? (
+      <div className="col" key='dados'>
+        <div className="margen-top20 text-center" data-toggle="buttons" id={jugador.nombre + "dados"}>
+          {jugador.status.dados.map((dado, indice) => {
+            return  <label key={"dados" + indice} className="btn btn-primary btn-dice" onClick={this.actualizar.bind(this, 2, dado)}>
+                      <input type={typeInputAccion} autoComplete="off" value={indice} />
+                      <Dado dado={dado} />
+                    </label> })}
         </div>
-      )
-      botonElegirAccion = <button key="botonElegirAccion" type="button" className="btn btn-secondary pull-right margen-top20" onClick={this.elegirDado}>Choose die</button>
-    }
+      </div>
+    ) : null
 
-    let classBoton = "col-lg-2 btn btn-secondary btn-margen pull-right margen-top20"
+    let botonElegirAccion = (
+      <div className="col-12" key="botonElegirAccion">
+        <button type="button" className="btn btn-primary pull-right margen-top20" onClick={this.elegirDado}>Choose die</button>
+      </div>
+    )
+
+    let filaDados = <div key="filaDados" className="row">{acciones}{dados}</div>
+
+    let elegirAccion = ( jugador.status.estado === CONST.ESTADO_JUGADOR.ACCION && ! texto ) ? [filaDados, botonElegirAccion] : [filaDados]
+
+    // Acciones carta
+    let classBoton = "col-2 btn btn-primary btn-margen pull-right margen-top20"
     let botonIncrementar = <button id="botonIncrementar" key="botonIncrementar" type="button" className={classBoton} onClick={this.incDado}>+1 Die</button>
     let botonDecrementar = <button id="botonDecrementar" key="botonDecrementar" type="button" className={classBoton} onClick={this.decDado}>-1 Die</button>
-    let botonCartaDescarte = <button key="botonElegirCarta" type="button" className={classBoton} data-toggle="modal" data-target="#modalDescarte">Choose card to recover</button>
-    let botonAccionPrevia = <button key="botonAccionPrevia" type="button" className={classBoton} onClick={this.accionPrevia}>Proceed</button>
+    let botonCartaDescarte = <button id="botonDescarte" key="botonElegirCarta" type="button" className={classBoton} data-toggle="modal" data-target="#modalDescarte">Choose card to recover</button>
+    let botonAccionPrevia = <button id="botonAccionPrev" key="botonAccionPrevia" type="button" className={classBoton} onClick={this.incdecDado}>Ok</button>
 
-    elegirAccion = (jugador.status.estado === ESTADO_JUGADOR.TURNO || jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA || texto ) ? [acciones, dados] : [acciones, dados, botonElegirAccion]
-
-    if (jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA && jugador.status.accion_mazo) elegirAccion.push(botonCartaDescarte)
+    if (jugador.status.estado === CONST.ESTADO_JUGADOR.ACCION_PREVIA && jugador.status.accion_mazo) elegirAccion.push(botonCartaDescarte)
+    
     if (jugador.status.golpe && jugador.status.golpe.cartaPalo && 
-        jugador.status.golpe.cartaPalo.modificar && jugador.status.estado === ESTADO_JUGADOR.ACCION_PREVIA) {
-      elegirAccion.push(botonIncrementar)
-      elegirAccion.push(botonDecrementar)
+        jugador.status.golpe.cartaPalo.modificar && jugador.status.estado === CONST.ESTADO_JUGADOR.ACCION_PREVIA) {
+      let divAccionPrevia = <div key="divAccionPrevia" className="row"><div className="col-12">{botonIncrementar}{botonDecrementar}{botonAccionPrevia}</div></div>
+      elegirAccion.push(divAccionPrevia)
     }
+    
+    // ************************************************************************************
+    // FIN Bloque de dados y acciones {elegirAccion}
+    // ************************************************************************************
+
+    // Botón donde se ejecuta la accion
+    let botonEjecutarAccion = texto ? 
+      ( 
+        <div className="col-12" key="botonEjecutarAccion">
+          <button type="button" className="btn btn-primary pull-right margen-top20" onClick={this.ejecutarAccion}>{texto}</button>
+        </div> 
+      ) : null
+      
+    // Alerta
     let alerta = this.state.alerta ? (
-      <div key="alerta" className="col-lg-12 margen-top20 alert alert-warning fade in" role="alert">
+      <div key="alerta" className="margen-top20 alert alert-warning" role="alert">
         <strong>Attention!</strong> {this.state.alerta}
       </div>
     ) : null
+    
     return (
-      <div className="col">
+      <div className="col columna-partida">
         <h1 className="tituloJugador" onClick={this.panelClicked}>{this.props.usuario.name}<span className="pull-right"><i className="fa fa-user fa-lg" style={{ color: jugador.color}} aria-hidden="true"></i></span></h1>
         <h2 className="tituloJugador">Points: <span className="pull-right">{jugador.golpes}</span></h2>
         <h2 className="tituloJugador">Progress: <span className="pull-right">{jugador.progreso}</span></h2>
         {elegirGolpe}
-        <div className="row">
-          <div className="col cursor"><img className="clickable" src={cartaAccion} data-toggle="modal" data-target="#modalAccion" /></div>
-          <div className="col cursor"><img className="clickable" src={cartaPalo} data-toggle="modal" data-target="#modalPalos" /></div>
+        <div className="row text-center">
+          <div className="col cursor"><img className="clickable img-fluid" src={cartaAccion} data-toggle="modal" data-target="#modalAccion" /></div>
+          <div className="col cursor"><img className="clickable img-fluid" src={cartaPalo} data-toggle="modal" data-target="#modalPalos" /></div>
         </div>
         {elegirAccion}
-        {botonElegirAccionDado}
+        {botonEjecutarAccion}
         {alerta}
         <CartasModal key="modalAccion" cartas={this.mazoAccion()} id="modalAccion" estado={jugador.status.estado} callback={this.cartaElegida}/>
         <CartasModal key="modalPalos" cartas={this.mazoPalos()} id="modalPalos" estado={jugador.status.estado} callback={this.paloElegido}/>

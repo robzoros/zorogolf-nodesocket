@@ -1,6 +1,6 @@
-$colorPrincipal: #f05f40;
 $assetPath : "/img";
 $bg-url: url(#{$assetPath}/ZorogolfPortadaWeb.png);
+$colorPrincipal: #f05f40;
 $colorSecundario: #fff;
 
 
@@ -9,7 +9,6 @@ body {
 	width: 100%;
 	height: 100%;
 	font-family: 'El Messiri', sans-serif;
-	font-size: 20px;
 }
 
 hr {
@@ -88,7 +87,7 @@ p {
 header {
 		position: relative;
 		width: 100%;
-		min-height: auto;
+		min-height: 100%;
 		text-align: center;
 		color: $colorSecundario;
 		background-image: $bg-url;
@@ -125,7 +124,21 @@ header .header-content .header-content-inner p {
 		color: ivory;
 }
 
-@media(min-width:768px) {
+.columna-partida {
+	min-width: 455px;
+	max-width: 576px;
+}
+
+@media(min-width:1500px){
+		body {
+			font-size: 20px;
+		}
+}
+
+@media(min-width:768px) and (max-width:1499px) {
+		body {
+			font-size: 16px;
+		}
 		header {
 				min-height: 100%;
 		}
@@ -220,8 +233,6 @@ fieldset[disabled] .btn-default.active {
 }
 
 .btn-primary:hover,
-.btn-primary:focus,
-.btn-primary.focus,
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
@@ -279,6 +290,18 @@ fieldset[disabled] .btn-primary.active {
 	margin-top: 10px;
 }
 
+.btn-dice {
+  padding: .2rem .4rem .1rem .4rem;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+.btn-dice.active:hover {
+	webkit-box-shadow: inset 0px 0px 10px 3px peachpuff;
+  -moz-box-shadow: inset 0px 0px 10px 10px peachpuff;
+  box-shadow: inset 0px 0px 10px 3px peachpuff;
+}
+
 ::-moz-selection {
 		text-shadow: none;
 		color: $colorSecundario;
@@ -325,6 +348,7 @@ img::-moz-selection {
 .navbar{
 	background-color: $colorPrincipal;
 	background-image: none;
+	font-size: 1.5rem;
 }
 .navbar-default .navbar-nav > li > a {color: white;}
 .tituloJugador {
@@ -490,4 +514,9 @@ input[type="text"], select {
 	border-width: 2px;
 	border-radius: 1em;
 	border-color: $colorPrincipal;
+}
+
+.svg-dice {
+	height: 2.5rem;
+	width: 2.5rem;
 }

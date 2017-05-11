@@ -19,7 +19,7 @@ class Jugadores extends Component {
 
   render() {
     return (
-      <div className="col" data-toggle="buttons">
+      <div className="col columna-partida" data-toggle="buttons">
         {this.props.datos.jugadores.map((jugador) => {
           let estilo = estiloJugador(jugador.color)
           let dados = jugador.status.dados ? (
@@ -27,8 +27,8 @@ class Jugadores extends Component {
               <div className="margen-top20" id={jugador.nombre + "dados"} >
                 {jugador.status.dados.map((dado, indice) => {
                   let enabled = (this.props.hoyo_actual.accion_dado === 0) && (dado.color === jugador.color)
-                  return  <label key={indice} className={"btn btn-primary btn-margen" + (enabled ? "" : " disabled")}>
-                            <input type="radio" autocomplete="off" value={jugador.nombre + indice} />
+                  return  <label key={indice} className={"btn btn-primary btn-dice" + (enabled ? "" : " disabled")}>
+                            <input type="radio" autoComplete="off" value={jugador.nombre + indice} />
                             <Dado dado={dado} />
                           </label> })}
               </div>
