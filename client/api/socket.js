@@ -10,7 +10,7 @@ export function conectar() {
 	//socket = io.connect('http://localhost:8080', { 'forceNew': true })
 	//socket = io.connect('https://127.0.0.1:3100', { 'forceNew': true });
 	if (!socket) {
-		socket = io.connect('https://zorogolf.zoroastro.c9users.io', { 'forceNew': true });
+		socket = io.connect('http://34.73.133.37:8080', { 'forceNew': true });
 
 		// **********************************
 		//             SISTEMA

@@ -2,3 +2,4 @@ node_modules/
 .c9/
 .idea/
 server/config/database.js
+package-lock.json
