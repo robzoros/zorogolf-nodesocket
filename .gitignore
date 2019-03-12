@@ -3,3 +3,4 @@ node_modules/
 .idea/
 server/config/database.js
 package-lock.json
+build.js
